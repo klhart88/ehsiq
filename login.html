@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>EHS-IQ · Sign in</title>
+  <link rel="icon" href="/assets/ehsiq-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
+</head>
+<body class="auth-page">
+  <main class="auth-card">
+    <p class="brand-lg">EHS-IQ</p>
+    <p class="muted">Elderly Homeowner Support</p>
+    <h1>Agent sign in</h1>
+
+    <p id="error-box" class="error-banner" role="alert" hidden></p>
+
+    <form id="login-form" novalidate>
+      <label>Email
+        <input type="email" id="email" autocomplete="username" required>
+      </label>
+      <label>Password
+        <input type="password" id="password" autocomplete="current-password" required>
+      </label>
+      <button type="submit" id="submit-btn">Sign in</button>
+    </form>
+    <p class="footnote">Access restricted to the authorized agent. Forgot the password? Send a recovery email from the Supabase dashboard (Authentication &gt; Users).</p>
+  </main>
+
+  <script type="module">
+    import { supabaseClient } from '/js/supabaseClient.js';
+
+    const form = document.getElementById('login-form');
+    const errorBox = document.getElementById('error-box');
+    const submitBtn = document.getElementById('submit-btn');
+
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) window.location.replace('/index.html');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.hidden = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Signing in...';
+
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value
+      });
+
+      if (error) {
+        errorBox.textContent = error.message === 'Invalid login credentials' ? 'Incorrect email or password.' : error.message;
+        errorBox.hidden = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign in';
+        return;
+      }
+      window.location.replace('/index.html');
+    });
+  </script>
+</body>
+</html>
