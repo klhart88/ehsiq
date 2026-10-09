@@ -80,6 +80,8 @@ Other counties aren't loaded. Programs using that table show as "Worth a call" t
 
 - **Import:** the PDF is read in the browser and never uploaded. Answers fill the intake form on screen, and nothing is saved until you click Save.
 - **Consent:** a ticked consent box on the form sets "How consent was given" to "Checked on the homeowner form (PDF)".
+- **Any viewer:** Adobe Reader and Chrome format phone, date, ZIP and dollar boxes while typing. Mac Preview doesn't, and it also changes the choice buttons when it saves. The import reads the saved answers either way and tidies phone numbers, dates (10092026 becomes 10/09/2026) and amounts.
+- **Address:** the form asks for street, city and ZIP separately. The import joins them, and the lookup always adds the city, IN and the ZIP when the street line lacks them, so a bare street name can't match another state.
 - **Typed copies only:** handwritten or scanned copies can't be imported. A copy saved with "Print to PDF" has lost its answers, and the app says so.
 - **How it links to the app:** each box is named after its intake field. `python3 -I tools/build_intake_pdf.py` rebuilds the PDF and stops if any name or choice no longer matches `intake.html`. Rebuild it whenever an intake question changes, and bump `FORM_ID` in both that script and `js/pdfImport.js` when field names change. The import warns about older copies.
 

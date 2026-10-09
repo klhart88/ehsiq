@@ -9,7 +9,7 @@ import { REPAIR_CATEGORIES, STATUS_LABELS, STATUS_ORDER } from '/js/engineCore.j
 import { matchProfile } from '/js/matchingEngine.js';
 import { getProfile, saveProfile, readIdFromUrl } from '/js/profiles.js';
 import { el, contactLines, PROGRAM_TYPE_LABELS, formatMoney, showError } from '/js/ui.js';
-import { readIntakePdf, toIsoDate } from '/js/pdfImport.js';
+import { readIntakePdf, toIsoDate, formatPhone } from '/js/pdfImport.js';
 
 const form = document.getElementById('intake-form');
 const resultsSection = document.getElementById('results');
@@ -103,6 +103,8 @@ for (const [key, label] of Object.entries(REPAIR_CATEGORIES)) {
     el('input', { type: 'checkbox', name: 'repair_categories', value: key }), label));
 }
 
+form.client_phone.addEventListener('blur', () => { form.client_phone.value = formatPhone(form.client_phone.value); });
+
 for (const input of form.querySelectorAll('[data-money]')) {
   input.addEventListener('input', () => {
     const digits = input.value.replace(/[^\d]/g, '');
@@ -112,8 +114,24 @@ for (const input of form.querySelectorAll('[data-money]')) {
 
 // ---------- Address lookup ----------
 
+// The lookup needs the whole address. If the street box is missing the city,
+// state or ZIP, add them from the other boxes so "3601 Leland Avenue" is
+// searched in Indianapolis, Indiana and not wherever else that street exists.
+function fullAddress() {
+  const street = form.property_address.value.trim();
+  if (!street) return '';
+  const city = form.property_city.value.trim();
+  const zip = form.property_zip.value.trim();
+  const hasZip = /\b\d{5}(-\d{4})?\b/.test(street);
+  const hasState = /,\s*(IN|Indiana)\b/i.test(street);
+  const hasCity = city && street.toLowerCase().includes(city.toLowerCase());
+  if (hasZip && hasState) return street;
+  return [street, hasCity ? null : city, hasState ? null : `IN${!hasZip && zip ? ` ${zip}` : ''}`]
+    .filter(Boolean).join(', ');
+}
+
 async function lookUpAddress() {
-  const address = form.property_address.value.trim();
+  const address = fullAddress();
   if (!address) {
     lookupStatus.textContent = 'Enter an address first.';
     return false;
@@ -125,12 +143,15 @@ async function lookUpAddress() {
     form.county_fips.value = loc.countyFips || '';
     form.census_tract.value = loc.censusTract || '';
     form.county_name.value = loc.countyName ? loc.countyName.replace(/ County$/, '') : '';
-    form.property_city.value = loc.city || form.property_city.value;
-    form.property_zip.value = loc.zip || form.property_zip.value;
-    addressLookedUp = address;
+    if (loc.state === 'IN') {
+      // Only fill city and ZIP from an Indiana match; never overwrite them with a wrong-state guess.
+      form.property_city.value = loc.city || form.property_city.value;
+      form.property_zip.value = loc.zip || form.property_zip.value;
+    }
+    addressLookedUp = form.property_address.value.trim();
 
     let note = `Found ${form.county_name.value || 'unknown'} County${loc.censusTract ? `, census tract ${loc.censusTract}` : ''}.`;
-    if (loc.state !== 'IN') note += ' This address is outside Indiana; EHS-IQ only covers Indiana.';
+    if (loc.state !== 'IN') note += ` The lookup matched an address outside Indiana (${loc.city || 'unknown city'}, ${loc.state || 'unknown state'}). Check the street, city and ZIP, then look it up again; EHS-IQ only covers Indiana.`;
     const cityChoice = form.querySelector('input[name="in_city_indianapolis"]:checked');
     if (cityChoice && cityChoice.value === '' && loc.state === 'IN') {
       if (loc.city === 'Indianapolis') {
@@ -239,6 +260,8 @@ importFile.addEventListener('change', async () => {
       answers[name] = digits === '' ? null : Number(digits);
       if (digits === '') notes.push(`"${raw}" in ${fieldLabel(name)} isn't a number, so it was left blank.`);
     }
+    if (answers.client_phone) answers.client_phone = formatPhone(answers.client_phone);
+    if (answers.property_zip) answers.property_zip = (answers.property_zip.match(/\d{5}(-\d{4})?/) || [answers.property_zip])[0];
     if (answers.consent_date !== undefined) {
       const iso = toIsoDate(answers.consent_date);
       if (!iso) notes.push(`The consent date "${answers.consent_date}" couldn't be read, so it was left blank.`);
@@ -248,18 +271,20 @@ importFile.addEventListener('change', async () => {
     form.reset();
     fillForm(answers);
     form.consent_method.value = answers.consent_given ? 'written_form' : '';
+    // The PDF asks for street, city and ZIP separately; the app keeps them in one line.
+    if (form.property_address.value.trim()) form.property_address.value = fullAddress();
     addressLookedUp = '';
     lookupStatus.textContent = '';
 
     const messages = [...warnings, ...notes];
     if (!answers.consent_given) messages.push('The consent box on the form was not ticked. Get the homeowner\'s consent before saving.');
     if (!answers.client_name) messages.push('The homeowner\'s name is blank.');
-    importResult.replaceChildren(
+    importResult.replaceChildren(...[
       el('div', { class: 'success-banner' },
         el('strong', { text: `Imported ${answered} answer${answered === 1 ? '' : 's'} from ${file.name}.` }),
         ' Review every section, then click Save and find programs.'),
       messages.length ? el('div', { class: 'notice' }, el('strong', { text: 'Check these:' }), el('ul', {}, messages.map(m => el('li', { text: m })))) : null
-    );
+    ].filter(Boolean));
     importResult.scrollIntoView({ block: 'start' });
     if (form.property_address.value.trim()) await lookUpAddress();
   } catch (err) {

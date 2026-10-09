@@ -74,37 +74,62 @@ export async function readIntakePdf(file, { triFields, repairKeys }) {
     if (field instanceof PDFLib.PDFTextField) {
       const text = (field.getText() || '').trim();
       if (text) { answers[name] = text; answered++; }
-    } else if (field instanceof PDFLib.PDFCheckBox) {
-      const checked = field.isChecked();
-      if (name === 'consent_given') {
-        answers.consent_given = checked;
-        if (checked) answered++;
-      } else if (name.startsWith('repair_')) {
-        const key = name.slice('repair_'.length);
-        if (checked && repairKeys.includes(key)) { answers.repair_categories.push(key); answered++; }
-      }
-    } else if (field instanceof PDFLib.PDFRadioGroup) {
-      const selected = field.getSelected() || null;
-      if (triFields.includes(name)) {
-        answers[name] = selected === 'Yes' ? true : selected === 'No' ? false : null;
-        if (selected === 'Yes' || selected === 'No') answered++;
-      } else if (selected) {
-        answers[name] = selected;
-        answered++;
-      }
+      continue;
+    }
+
+    // Every other box is a button: a Yes/No/Not sure question, a multiple
+    // choice, a repair tick box or the consent box. Read the saved answer
+    // straight from the file rather than trusting the button type, because
+    // some viewers (Mac Preview) change choice groups into plain checkboxes
+    // when they save.
+    const value = savedButtonValue(PDFLib, field);
+    if (triFields.includes(name)) {
+      answers[name] = value === 'Yes' ? true : value === 'No' ? false : null;
+      if (value === 'Yes' || value === 'No') answered++;
+    } else if (name === 'consent_given') {
+      answers.consent_given = value !== null;
+      if (value !== null) answered++;
+    } else if (name.startsWith('repair_')) {
+      const key = name.slice('repair_'.length);
+      if (value !== null && repairKeys.includes(key)) { answers.repair_categories.push(key); answered++; }
+    } else if (value !== null) {
+      answers[name] = value;
+      answered++;
     }
   }
 
   return { answers, answered, warnings };
 }
 
-/** Turn "10/9/2026", "10-09-26" or "2026-10-09" into 2026-10-09; null if unreadable. */
+/** The chosen value of a button field ('Yes', 'none', 'soon'...), or null if nothing is chosen. */
+function savedButtonValue(PDFLib, field) {
+  const read = (obj) => {
+    if (obj instanceof PDFLib.PDFName) return obj.decodeText();
+    if (obj instanceof PDFLib.PDFString || obj instanceof PDFLib.PDFHexString) return obj.decodeText();
+    return null;
+  };
+  let value = read(field.acroField.dict.lookup(PDFLib.PDFName.of('V')));
+  if (value === null) {
+    // No saved value on the field: fall back to whichever button is drawn as on.
+    for (const widget of field.acroField.getWidgets()) {
+      const state = read(widget.getAppearanceState?.());
+      if (state && state !== 'Off') { value = state; break; }
+    }
+  }
+  return value && value !== 'Off' ? value : null;
+}
+
+/** Turn "10/9/2026", "10-09-26", "10092026" or "2026-10-09" into 2026-10-09; null if unreadable. */
 export function toIsoDate(text) {
   if (!text) return null;
   const t = text.trim();
   let m = t.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
   let y, mo, d;
   if (m) { [, y, mo, d] = m; }
+  else if ((m = t.match(/^(\d{2})(\d{2})(\d{4}|\d{2})$/))) {   // 10092026 or 100926
+    [, mo, d, y] = m;
+    if (y.length === 2) y = `20${y}`;
+  }
   else if ((m = t.match(/^(\d{1,2})[/.-](\d{1,2})[/.-](\d{2}|\d{4})$/))) {
     [, mo, d, y] = m;
     if (y.length === 2) y = `20${y}`;
@@ -112,4 +137,12 @@ export function toIsoDate(text) {
   const date = new Date(Number(y), Number(mo) - 1, Number(d));
   if (date.getMonth() !== Number(mo) - 1 || date.getDate() !== Number(d)) return null;
   return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+}
+
+/** 3172853225, (317) 285-3225 or +1 317.285.3225 become 317-285-3225; anything else is left as typed. */
+export function formatPhone(text) {
+  if (!text) return text;
+  let digits = text.replace(/\D/g, '');
+  if (digits.length === 11 && digits.startsWith('1')) digits = digits.slice(1);
+  return digits.length === 10 ? `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}` : text.trim();
 }

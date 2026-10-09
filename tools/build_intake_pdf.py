@@ -30,7 +30,7 @@ OUT = ROOT / 'forms' / 'EHS-IQ_Homeowner_Form.pdf'
 LOGO = ROOT / 'assets' / 'smartiq-mark.png'
 
 FORM_ID = 'ehsiq-intake-v1'          # bump when field names change
-FORM_VERSION_LABEL = 'Version 1 · October 2026'
+FORM_VERSION_LABEL = 'Version 1.1 · October 2026'
 AGENT = 'Kelvin Hart'
 
 # SmartIQ brand
@@ -56,12 +56,12 @@ TRI = [('Yes', 'Yes'), ('No', 'No'), ('Unknown', 'Not sure')]
 
 SECTIONS = [
     ('1. About you', [
-        ('row', [('Homeowner name', 'client_name', 0.6), ('Phone number', 'client_phone', 0.4)]),
+        ('row', [('Homeowner name', 'client_name', 0.6), ('Phone number, e.g. 317-555-0123', 'client_phone', 0.4)]),
         ('row', [('If someone is filling this in for the homeowner, their name and relationship', 'completed_for_client_by', 1.0)]),
         ('consent',),
     ]),
     ('2. The home', [
-        ('row', [('Street address', 'property_address', 1.0)]),
+        ('row', [('Street address (house number and street)', 'property_address', 1.0)]),
         ('row', [('City', 'property_city', 0.4), ('ZIP code', 'property_zip', 0.25), ('County', 'county_name', 0.35)]),
         ('row', [('Township (if you know it)', 'township', 0.5)]),
         ('tri', 'in_city_indianapolis', 'Is the home inside the City of Indianapolis?',
@@ -432,7 +432,7 @@ class FormWriter:
         y = self.y - len(lines) * 12.5 - 14
         self.label(MARGIN, y - 9, 'Date', 120)
         self.text_box('consent_date', MARGIN, y - 33, 140, 22, 'Date (month/day/year)', maxlen=20)
-        self.label(MARGIN + 150, y - 27, 'month / day / year', 160, size=8, font='Helvetica', color=MUTED)
+        self.label(MARGIN + 150, y - 27, 'month / day / year, e.g. 10/09/2026', 220, size=8, font='Helvetica', color=MUTED)
         self.y = y - 46
 
     def repairs(self):
@@ -527,9 +527,51 @@ def fix_radio_dots(path):
     writer.write(str(path))
 
 
+# Typing help for Adobe Reader and Chrome, using the standard Acrobat format
+# functions. Mac Preview ignores these, which is why the app's import also
+# tidies phone numbers, dates and dollar amounts.
+FORMATS = {
+    'client_phone': ('AFSpecial_Keystroke(2);', 'AFSpecial_Format(2);'),
+    'property_zip': ('AFSpecial_Keystroke(0);', 'AFSpecial_Format(0);'),
+    'consent_date': ('AFDate_KeystrokeEx("mm/dd/yyyy");', 'AFDate_FormatEx("mm/dd/yyyy");'),
+    'household_income': ('AFNumber_Keystroke(0, 0, 0, 0, "$", true);', 'AFNumber_Format(0, 0, 0, 0, "$", true);'),
+    'cost_estimate_low': ('AFNumber_Keystroke(0, 0, 0, 0, "$", true);', 'AFNumber_Format(0, 0, 0, 0, "$", true);'),
+    'cost_estimate_high': ('AFNumber_Keystroke(0, 0, 0, 0, "$", true);', 'AFNumber_Format(0, 0, 0, 0, "$", true);'),
+    'years_in_home': ('AFNumber_Keystroke(0, 0, 0, 0, "", true);', 'AFNumber_Format(0, 0, 0, 0, "", true);'),
+    'age_oldest_owner': ('AFNumber_Keystroke(0, 0, 0, 0, "", true);', 'AFNumber_Format(0, 0, 0, 0, "", true);'),
+    'household_size': ('AFNumber_Keystroke(0, 0, 0, 0, "", true);', 'AFNumber_Format(0, 0, 0, 0, "", true);'),
+    'va_disability_rating': ('AFNumber_Keystroke(0, 0, 0, 0, "", true);', 'AFNumber_Format(0, 0, 0, 0, "", true);'),
+}
+
+
+def add_format_actions(path):
+    from pypdf import PdfReader, PdfWriter
+    from pypdf.generic import DictionaryObject, NameObject, TextStringObject
+
+    def js(code):
+        return DictionaryObject({NameObject('/S'): NameObject('/JavaScript'), NameObject('/JS'): TextStringObject(code)})
+
+    writer = PdfWriter(clone_from=PdfReader(str(path)))
+    done = set()
+    for page in writer.pages:
+        for ref in page.get('/Annots', []):
+            annot = ref.get_object()
+            field = annot if '/T' in annot else annot.get('/Parent', {}).get_object() if annot.get('/Parent') else None
+            name = field.get('/T') if field else None
+            if name in FORMATS:
+                keystroke, fmt = FORMATS[name]
+                field[NameObject('/AA')] = DictionaryObject({NameObject('/K'): js(keystroke), NameObject('/F'): js(fmt)})
+                done.add(name)
+    missing = set(FORMATS) - done
+    if missing:
+        sys.exit(f'Format actions not attached to: {sorted(missing)}')
+    writer.write(str(path))
+
+
 if __name__ == '__main__':
     check_against_intake()
     OUT.parent.mkdir(exist_ok=True)
     FormWriter(OUT).build()
     fix_radio_dots(OUT)
+    add_format_actions(OUT)
     print(f'Wrote {OUT.relative_to(ROOT)}')
