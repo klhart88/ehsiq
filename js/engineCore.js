@@ -329,9 +329,11 @@ export function fillCallScript(script, profile) {
     county: profile.county_name,
     zip: profile.property_zip,
     township: profile.township,
-    size: profile.household_size,
+    size: isBlank(profile.household_size) ? null : `${profile.household_size} ${Number(profile.household_size) === 1 ? 'person' : 'people'}`,
     income: isBlank(profile.household_income) ? null : Number(profile.household_income).toLocaleString('en-US'),
     repair: repairs.length ? repairs.join(' and ') : null
   };
+  // A blank township reads naturally instead of printing "[township] Township".
+  if (isBlank(profile.township)) script = script.replace(/in \{township\} Township/g, 'in their township');
   return script.replace(/\{(\w+)\}/g, (_, key) => (isBlank(values[key]) ? `[${key}]` : String(values[key])));
 }

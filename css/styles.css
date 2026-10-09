@@ -144,6 +144,39 @@ label.half { max-width: 50%; }
 
 .form-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
 
+/* ---------- Info tips ---------- */
+
+.info-wrap { position: relative; display: inline-block; margin-left: 0.4rem; vertical-align: 0.1em; }
+button.info {
+  width: 1.3rem;
+  height: 1.3rem;
+  padding: 0;
+  border-radius: 50%;
+  font: italic 700 0.8rem/1 Georgia, serif;
+  color: var(--brand);
+  background: #fff;
+  border: 1.5px solid var(--brand);
+}
+button.info:hover, button.info[aria-expanded="true"] { background: var(--brand); color: #fff; }
+.tip {
+  display: none;
+  position: absolute;
+  z-index: 20;
+  left: -0.5rem;
+  top: calc(100% + 0.4rem);
+  width: min(22rem, 80vw);
+  padding: 0.6rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.45;
+  color: #fff;
+  background: var(--ink);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+.info-wrap:hover .tip, button.info:focus-visible + .tip, button.info[aria-expanded="true"] + .tip { display: block; }
+
 /* ---------- Buttons ---------- */
 
 button, .button {

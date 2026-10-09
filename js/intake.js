@@ -22,6 +22,57 @@ const NOT_IN_CITY = ['Speedway', 'Beech Grove', 'Lawrence', 'Southport'];
 let profileId = readIdFromUrl();
 let addressLookedUp = '';
 
+// ---------- Help text for the info buttons ----------
+
+const HELP = {
+  in_city_indianapolis: 'Indianapolis city limits cover most of Marion County, but Speedway, Beech Grove, Lawrence and Southport are separate cities. The city repair programs only serve homes inside city limits. The address lookup suggests an answer; confirm it.',
+  inside_i465: 'Whether the home is inside the I-465 loop. Home Repairs for Good focuses its free repairs there.',
+  usda_rural_eligible: 'USDA\'s 504 repair grant and loan only cover addresses USDA counts as rural. Check the address at eligibility.sc.egov.usda.gov (Single Family Housing Repairs). Most of Marion County is not eligible.',
+  owner_on_deed: 'Their name is on the deed, the county\'s property record. Nearly every program requires it. For Marion County, check maps.indy.gov.',
+  primary_residence: 'They live in this home most of the year. Programs don\'t fund rentals or second homes.',
+  receives_ssi: 'Supplemental Security Income: a monthly federal payment for people with low income who are 65 or older, blind or disabled. Not the same as regular Social Security retirement. SSI qualifies a home for weatherization automatically.',
+  receives_medicaid: 'Health coverage for people with low income. Needed for the PathWays for Aging waiver, which pays for home modifications.',
+  receives_snap: 'Food assistance, formerly called food stamps, paid on an EBT card. Recorded as a sign of low income.',
+  receives_energy_assistance: 'LIHEAP, Indiana\'s Energy Assistance Program: help paying heating or electric bills, applied for through the community action agency. It qualifies a home for weatherization automatically.',
+  receives_tanf: 'Temporary Assistance for Needy Families: cash assistance, mostly for families with children. Rare for older homeowners. It qualifies a home for weatherization automatically.',
+  is_veteran: 'Served in the U.S. military, or is the surviving spouse of someone who did. Opens the VA home-adaptation grants.',
+  va_service_connected: 'The VA has rated a disability as caused or worsened by military service. Needed for the larger VA adapted-housing grants, and raises the HISA amount.',
+  has_disability: 'Any long-term condition that limits daily life. Some programs serve people with a disability at any age.',
+  uses_mobility_device: 'Helps judge whether a ramp or other access changes are needed.',
+  recent_falls: 'A fall in the last year makes safety fixes such as grab bars and rails more urgent.',
+  needs_daily_help: 'Needs help with bathing, dressing, meals or medications. Relevant to the PathWays waiver, which requires a nursing-facility level of care.',
+  taxes_current: 'Property taxes paid, with nothing past due. Most programs require this. The county treasurer\'s site shows the status.',
+  mortgage_current: 'Payments are up to date. Answer Yes if there is no mortgage. Having a mortgage is fine; being behind on it usually isn\'t.',
+  insurance_current: 'A homeowners insurance policy is in force. Some programs require it, and it may cover storm damage.',
+  can_afford_small_payment: 'Only matters for low-interest loans such as USDA\'s 1% repair loan. Answer No if any monthly payment would be a hardship.',
+  title_issue: 'How the home is titled. A mortgage is not a title problem: choose "Clear" and answer the mortgage question in section 7. A home still in a late relative\'s name, or bought on a land contract, is shut out of many programs until it\'s fixed.',
+  home_type: 'Some programs exclude manufactured homes on rented lots, duplexes or condos.',
+  township: 'Used to find the right township trustee for emergency help. Marion County has nine townships: Center, Decatur, Franklin, Lawrence, Perry, Pike, Warren, Washington and Wayne.'
+};
+
+let tipCount = 0;
+function infoButton(field, label) {
+  const id = `tip-${++tipCount}`;
+  const tip = el('span', { class: 'tip', id, role: 'tooltip', text: HELP[field] });
+  const button = el('button', {
+    type: 'button', class: 'info', 'aria-label': `About: ${label}`, 'aria-describedby': id, 'aria-expanded': 'false', text: 'i',
+    onclick: (e) => {
+      e.preventDefault();
+      const open = button.getAttribute('aria-expanded') !== 'true';
+      document.querySelectorAll('.info[aria-expanded="true"]').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      button.setAttribute('aria-expanded', String(open));
+    }
+  });
+  return el('span', { class: 'info-wrap' }, button, tip);
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.info-wrap')) document.querySelectorAll('.info[aria-expanded="true"]').forEach(b => b.setAttribute('aria-expanded', 'false'));
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') document.querySelectorAll('.info[aria-expanded="true"]').forEach(b => b.setAttribute('aria-expanded', 'false'));
+});
+
 // ---------- Build the repeated controls ----------
 
 const triFields = [];
@@ -34,8 +85,15 @@ for (const group of document.querySelectorAll('.tri-group')) {
         el('input', { type: 'radio', name: field, value, checked: value === '' }),
         text));
     group.append(el('div', { class: 'tri-row', role: 'radiogroup', 'aria-label': label },
-      el('span', { class: 'tri-label', text: label }), el('span', { class: 'tri-options' }, radios)));
+      el('span', { class: 'tri-label' }, label, HELP[field] ? infoButton(field, label) : null), el('span', { class: 'tri-options' }, radios)));
   }
+}
+
+// Info buttons on the plain fields that have help text.
+for (const field of ['title_issue', 'home_type', 'township']) {
+  const input = form.elements.namedItem(field);
+  const label = input?.closest('label');
+  if (label) label.insertBefore(infoButton(field, label.firstChild.textContent.trim()), input);
 }
 
 const repairBox = document.getElementById('repair-checks');
