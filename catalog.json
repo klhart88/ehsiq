@@ -1,0 +1,2231 @@
+{
+  "_about": "EHS-IQ program catalog: the single source of truth for sql/02_seed.sql (built by tools/build_seed.py) and for the offline engine tests (tools/test_engine.mjs). Edit here, rebuild the seed, never hand-edit the SQL. Facts verified October 7-8, 2026 against each program's own page unless a status says otherwise.",
+  "verified_on": "2026-10-08",
+  "lookup_tables": [
+    {
+      "table_name": "in_80ami_2026",
+      "description": "HUD FY2026 low-income limit (80% of area median income), effective June 1, 2026, from IHCDA RED Notice 26-17. Marion, Hamilton and Hendricks share the Indianapolis-Carmel-Anderson metro limits, so all three are identical; Marion matches the City of Indianapolis repair page.",
+      "value_type": "income_limit",
+      "effective_date": "2026-06-01",
+      "source_url": "https://secure.in.gov/ihcda/files/RED-Notice-26-17-2026-Federal-Program-Income-and-Rent-Limits.pdf",
+      "values": [
+        {
+          "county_fips": "18097",
+          "by_household_size": [
+            61800,
+            70600,
+            79450,
+            88250,
+            95350,
+            102400,
+            109450,
+            116500
+          ]
+        },
+        {
+          "county_fips": "18057",
+          "by_household_size": [
+            61800,
+            70600,
+            79450,
+            88250,
+            95350,
+            102400,
+            109450,
+            116500
+          ]
+        },
+        {
+          "county_fips": "18063",
+          "by_household_size": [
+            61800,
+            70600,
+            79450,
+            88250,
+            95350,
+            102400,
+            109450,
+            116500
+          ]
+        }
+      ]
+    },
+    {
+      "table_name": "in_50ami_2026",
+      "description": "HUD FY2026 very low-income limit (50% of area median income), effective June 1, 2026, from IHCDA RED Notice 26-17. Marion, Hamilton and Hendricks are identical (same metro). Loaded ahead of need: no program rule uses it yet.",
+      "value_type": "income_limit",
+      "effective_date": "2026-06-01",
+      "source_url": "https://secure.in.gov/ihcda/files/RED-Notice-26-17-2026-Federal-Program-Income-and-Rent-Limits.pdf",
+      "values": [
+        {
+          "county_fips": "18097",
+          "by_household_size": [
+            38650,
+            44150,
+            49650,
+            55150,
+            59600,
+            64000,
+            68400,
+            72800
+          ]
+        },
+        {
+          "county_fips": "18057",
+          "by_household_size": [
+            38650,
+            44150,
+            49650,
+            55150,
+            59600,
+            64000,
+            68400,
+            72800
+          ]
+        },
+        {
+          "county_fips": "18063",
+          "by_household_size": [
+            38650,
+            44150,
+            49650,
+            55150,
+            59600,
+            64000,
+            68400,
+            72800
+          ]
+        }
+      ]
+    },
+    {
+      "table_name": "in_30ami_2026",
+      "description": "HUD FY2026 extremely low-income limit (30% of area median income), effective June 1, 2026, from IHCDA RED Notice 26-17. Marion, Hamilton and Hendricks are identical (same metro). Loaded ahead of need: no program rule uses it yet.",
+      "value_type": "income_limit",
+      "effective_date": "2026-06-01",
+      "source_url": "https://secure.in.gov/ihcda/files/RED-Notice-26-17-2026-Federal-Program-Income-and-Rent-Limits.pdf",
+      "values": [
+        {
+          "county_fips": "18097",
+          "by_household_size": [
+            23200,
+            26500,
+            29800,
+            33100,
+            35750,
+            38400,
+            41050,
+            43700
+          ]
+        },
+        {
+          "county_fips": "18057",
+          "by_household_size": [
+            23200,
+            26500,
+            29800,
+            33100,
+            35750,
+            38400,
+            41050,
+            43700
+          ]
+        },
+        {
+          "county_fips": "18063",
+          "by_household_size": [
+            23200,
+            26500,
+            29800,
+            33100,
+            35750,
+            38400,
+            41050,
+            43700
+          ]
+        }
+      ]
+    },
+    {
+      "table_name": "fpl_150_2026",
+      "description": "150% of the 2026 HHS poverty guidelines (48 contiguous states), effective January 13, 2026. Household sizes 1-8; larger households use the 8-person figure, which understates their limit.",
+      "value_type": "income_limit",
+      "effective_date": "2026-01-13",
+      "source_url": "https://public-inspection.federalregister.gov/2026-00755.pdf",
+      "poverty_multiple": 1.5
+    },
+    {
+      "table_name": "fpl_200_2026",
+      "description": "200% of the 2026 HHS poverty guidelines (48 contiguous states), effective January 13, 2026. Household sizes 1-8; larger households use the 8-person figure, which understates their limit.",
+      "value_type": "income_limit",
+      "effective_date": "2026-01-13",
+      "source_url": "https://public-inspection.federalregister.gov/2026-00755.pdf",
+      "poverty_multiple": 2.0
+    },
+    {
+      "table_name": "in_usda_very_low",
+      "description": "USDA Section 504 very-low income limits by county. Not loaded yet: the engine reports this as something USDA confirms.",
+      "value_type": "income_limit",
+      "effective_date": "2026-10-08",
+      "source_url": "https://www.rd.usda.gov/sites/default/files/RD-DirectLimitMap.pdf",
+      "values": []
+    },
+    {
+      "table_name": "in_usda_low",
+      "description": "USDA Section 504 low income limits by county. Not loaded yet: the engine reports this as something USDA confirms.",
+      "value_type": "income_limit",
+      "effective_date": "2026-10-08",
+      "source_url": "https://www.rd.usda.gov/sites/default/files/RD-DirectLimitMap.pdf",
+      "values": []
+    }
+  ],
+  "poverty_guidelines_2026": [
+    15960,
+    21640,
+    27320,
+    33000,
+    38680,
+    44360,
+    50040,
+    55720
+  ],
+  "programs": [
+    {
+      "slug": "usda-504-grant",
+      "name": "USDA Section 504 Home Repair Grant",
+      "administering_entity": "USDA Rural Development",
+      "reach": "federal",
+      "program_type": "grant",
+      "description": "Grant for very-low-income homeowners age 62 or older in USDA-eligible rural areas, to remove health and safety hazards.",
+      "benefit_summary": "Up to $10,000 lifetime grant ($15,000 in a presidentially declared disaster area). Can be combined with the 504 loan for up to $50,000.",
+      "max_amount": 10000,
+      "strings_attached": "Repaid if the home is sold within 3 years. The homeowner must be unable to get affordable credit elsewhere.",
+      "how_to_apply": "Call the USDA Rural Development office for the county. Ask for Form RD 3550-35 (intake) and RD 3550-1 (authorization to release information).",
+      "call_script": "I'm calling for a homeowner age {age} in {county} County who owns and lives in the home. They have {repair} and can't afford the repair. Can you confirm the address is USDA-eligible and send the Section 504 grant intake form?",
+      "source_url": "https://www.rd.usda.gov/programs-services/single-family-housing-programs/single-family-housing-repair-loans-grants/in",
+      "funding_status": "open",
+      "status_note": "Applications accepted year-round; approval time depends on local funding.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [],
+      "contacts": [
+        {
+          "label": "USDA Rural Development, Indiana State Office",
+          "phone": "317-290-3100",
+          "address": "5975 Lakeside Blvd, Indianapolis, IN 46278",
+          "website": "https://www.rd.usda.gov/programs-services/single-family-housing-programs/single-family-housing-repair-loans-grants/in",
+          "notes": "Marion County is not listed under any area office; start here."
+        },
+        {
+          "label": "USDA Crawfordsville Area Office",
+          "phone": "765-362-0405 ext. 4",
+          "address": "2032 Lebanon Rd, Crawfordsville, IN 47933",
+          "county_fips": "18063"
+        },
+        {
+          "label": "USDA Muncie Area Office",
+          "phone": "765-747-5531 ext. 4",
+          "address": "3641 N Briarwood Ln, Muncie, IN 47304",
+          "county_fips": "18057"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Home is in Indiana",
+          "rule_config": {
+            "scope_level": "state",
+            "allowed_values": [
+              "IN"
+            ]
+          }
+        },
+        {
+          "rule_type": "geographic_scope",
+          "description": "Address is in a USDA-eligible rural area",
+          "rule_config": {
+            "scope_level": "flag",
+            "field": "usda_rural_eligible",
+            "value": true,
+            "fail_message": "Address is not in a USDA-eligible rural area",
+            "unknown_message": "Check the address on USDA's eligibility map (eligibility.sc.egov.usda.gov) and record the answer in the intake."
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Owns and lives in the home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "owner_on_deed",
+                "op": "is_true"
+              },
+              {
+                "field": "primary_residence",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Must own the home and live in it",
+            "unknown_message": "Confirm the homeowner is on the deed and lives in the home."
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Oldest owner is 62 or older",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "age_oldest_owner",
+                "op": "gte",
+                "value": 62
+              }
+            ],
+            "fail_message": "Grant requires an owner age 62 or older",
+            "unknown_message": "Owner's age not recorded."
+          }
+        },
+        {
+          "rule_type": "income_threshold",
+          "description": "Household income within USDA's very-low limit for the county",
+          "rule_config": {
+            "lookup_table": "in_usda_very_low",
+            "comparator": "lte",
+            "label": "USDA very-low income limit",
+            "fallback_message": "USDA's very-low income limit for this county isn't loaded in EHS-IQ; USDA confirms income at intake."
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Repair removes a health or safety hazard",
+          "rule_config": {
+            "allowed": [
+              "roof",
+              "heating",
+              "cooling",
+              "water_heater",
+              "plumbing_sewer",
+              "septic_well",
+              "electrical",
+              "structural",
+              "windows_doors",
+              "ramp",
+              "accessibility",
+              "safety_fixes",
+              "lead_mold",
+              "storm_damage"
+            ]
+          }
+        }
+      ],
+      "requirements": [
+        {
+          "requirement_type": "document",
+          "description": "Form RD 3550-35 intake form and RD 3550-1 authorization to release information"
+        },
+        {
+          "requirement_type": "document",
+          "description": "Proof of age 62 or older"
+        },
+        {
+          "requirement_type": "document",
+          "description": "Repair estimates"
+        }
+      ]
+    },
+    {
+      "slug": "usda-504-loan",
+      "name": "USDA Section 504 Home Repair Loan",
+      "administering_entity": "USDA Rural Development",
+      "reach": "federal",
+      "program_type": "low_interest_loan",
+      "description": "1% fixed-rate repair loan for low- and very-low-income homeowners in USDA-eligible rural areas who cannot get affordable credit elsewhere.",
+      "benefit_summary": "Up to $40,000 at 1% fixed for 20 years. Can be combined with the 504 grant for up to $50,000.",
+      "max_amount": 40000,
+      "strings_attached": "This is a loan with monthly payments. Full title service is required if 504 loans total more than $25,000.",
+      "how_to_apply": "Call the USDA Rural Development office for the county; the same intake covers the grant and the loan.",
+      "call_script": "I'm calling for a homeowner in {county} County who owns and lives in the home and needs help with {repair}. They can't get a regular loan. Can you check whether the address is USDA-eligible and whether a Section 504 loan, or a grant and loan together, could work?",
+      "source_url": "https://www.rd.usda.gov/programs-services/single-family-housing-programs/single-family-housing-repair-loans-grants/in",
+      "funding_status": "open",
+      "status_note": "Applications accepted year-round.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [],
+      "contacts": [
+        {
+          "label": "USDA Rural Development, Indiana State Office",
+          "phone": "317-290-3100",
+          "address": "5975 Lakeside Blvd, Indianapolis, IN 46278"
+        },
+        {
+          "label": "USDA Crawfordsville Area Office",
+          "phone": "765-362-0405 ext. 4",
+          "county_fips": "18063"
+        },
+        {
+          "label": "USDA Muncie Area Office",
+          "phone": "765-747-5531 ext. 4",
+          "county_fips": "18057"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Home is in Indiana",
+          "rule_config": {
+            "scope_level": "state",
+            "allowed_values": [
+              "IN"
+            ]
+          }
+        },
+        {
+          "rule_type": "geographic_scope",
+          "description": "Address is in a USDA-eligible rural area",
+          "rule_config": {
+            "scope_level": "flag",
+            "field": "usda_rural_eligible",
+            "value": true,
+            "fail_message": "Address is not in a USDA-eligible rural area",
+            "unknown_message": "Check the address on USDA's eligibility map (eligibility.sc.egov.usda.gov) and record the answer in the intake."
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Owns and lives in the home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "owner_on_deed",
+                "op": "is_true"
+              },
+              {
+                "field": "primary_residence",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Must own the home and live in it",
+            "unknown_message": "Confirm the homeowner is on the deed and lives in the home."
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Could manage a small monthly payment",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "can_afford_small_payment",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "A loan needs some ability to make monthly payments",
+            "unknown_message": "Ask whether a small monthly payment is possible; USDA checks repayment ability."
+          }
+        },
+        {
+          "rule_type": "income_threshold",
+          "description": "Household income within USDA's low limit for the county",
+          "rule_config": {
+            "lookup_table": "in_usda_low",
+            "comparator": "lte",
+            "label": "USDA low income limit",
+            "fallback_message": "USDA's low income limit for this county isn't loaded in EHS-IQ; USDA confirms income at intake."
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Repair, improvement or hazard removal",
+          "rule_config": {
+            "allowed": [
+              "roof",
+              "heating",
+              "cooling",
+              "water_heater",
+              "plumbing_sewer",
+              "septic_well",
+              "electrical",
+              "structural",
+              "windows_doors",
+              "insulation_weatherization",
+              "ramp",
+              "accessibility",
+              "safety_fixes",
+              "lead_mold",
+              "storm_damage",
+              "other"
+            ]
+          }
+        }
+      ],
+      "requirements": [
+        {
+          "requirement_type": "document",
+          "description": "Form RD 410-4 loan application and RD 3550-4 employment and asset certification"
+        }
+      ]
+    },
+    {
+      "slug": "va-hisa",
+      "name": "VA Home Improvements and Structural Alterations (HISA)",
+      "administering_entity": "U.S. Department of Veterans Affairs",
+      "reach": "federal",
+      "program_type": "grant",
+      "description": "Medically necessary access changes to a veteran's home: entry ramps, bathroom access, lowered counters and sinks.",
+      "benefit_summary": "Lifetime benefit of $6,800 for a service-connected condition or a 50%+ rating; $2,000 otherwise.",
+      "max_amount": 6800,
+      "strings_attached": "Does not pay for roofs, furnaces, air conditioning or routine repairs. Needs a VA physician's prescription.",
+      "how_to_apply": "Ask the veteran's VA doctor for a prescription, then submit VA Form 10-0103 with an itemized estimate and a photo of the area to the Prosthetic and Sensory Aids Service.",
+      "call_script": "I'm helping a veteran who needs help with {repair} at home to get in and out safely. How do we get a HISA prescription and submit Form 10-0103?",
+      "source_url": "https://www.prosthetics.va.gov/psas/HISA2.asp",
+      "funding_status": "open",
+      "status_note": "Lifetime benefit; ask PSAS how much of it the veteran has already used.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [],
+      "contacts": [
+        {
+          "label": "Prosthetic and Sensory Aids Service at the veteran's VA medical center",
+          "website": "https://www.va.gov/find-locations/?facilityType=health",
+          "notes": "Use the facility locator for the veteran's VA medical center."
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "homeowner_status",
+          "description": "Homeowner is a veteran",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "is_veteran",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "For veterans only",
+            "unknown_message": "Ask whether the homeowner is a veteran."
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Access or bathroom change",
+          "rule_config": {
+            "allowed": [
+              "ramp",
+              "accessibility"
+            ]
+          }
+        },
+        {
+          "rule_type": "external_verification",
+          "description": "VA prescription",
+          "rule_config": {
+            "message": "Needs a prescription from a VA physician showing the change is medically necessary."
+          }
+        }
+      ],
+      "requirements": [
+        {
+          "requirement_type": "document",
+          "description": "VA physician's prescription"
+        },
+        {
+          "requirement_type": "document",
+          "description": "VA Form 10-0103, an itemized estimate and a color photo of the area"
+        },
+        {
+          "requirement_type": "document",
+          "description": "DD-214 and VA disability rating letter, if any"
+        }
+      ]
+    },
+    {
+      "slug": "va-sah-sha",
+      "name": "VA Specially Adapted Housing and Special Home Adaptation grants",
+      "administering_entity": "U.S. Department of Veterans Affairs",
+      "reach": "federal",
+      "program_type": "grant",
+      "description": "Grants to adapt a home for veterans with specific severe service-connected disabilities.",
+      "benefit_summary": "Up to $126,526 (SAH) or $25,350 (SHA) at fiscal 2026 rates; usable up to six times.",
+      "max_amount": 126526,
+      "strings_attached": "Only for specific disabilities, such as loss of use of limbs, blindness in both eyes, severe burns or certain respiratory injuries.",
+      "how_to_apply": "Apply online with VA Form 26-4555, by mail or in person.",
+      "call_script": "I'm helping a veteran with a service-connected disability who needs help with {repair}. Can you tell us whether their rating qualifies for a Specially Adapted Housing or Special Home Adaptation grant?",
+      "source_url": "https://www.va.gov/housing-assistance/disability-housing-grants/",
+      "funding_status": "open",
+      "status_note": "Amounts are for fiscal 2026 (to September 30, 2026); check for fiscal 2027 figures.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [
+        "Fiscal 2027 grant amounts"
+      ],
+      "contacts": [
+        {
+          "label": "VA disability housing grants (apply online)",
+          "website": "https://www.va.gov/housing-assistance/disability-housing-grants/how-to-apply",
+          "phone": "800-827-1000",
+          "notes": "VA benefits line"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "homeowner_status",
+          "description": "Veteran with a service-connected disability",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "is_veteran",
+                "op": "is_true"
+              },
+              {
+                "field": "va_service_connected",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "For veterans with a service-connected disability only",
+            "unknown_message": "Ask whether the veteran has a service-connected disability rating."
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Adaptation for disability",
+          "rule_config": {
+            "allowed": [
+              "ramp",
+              "accessibility",
+              "structural"
+            ]
+          }
+        },
+        {
+          "rule_type": "external_verification",
+          "description": "Qualifying disability",
+          "rule_config": {
+            "message": "Only specific severe disabilities qualify; VA decides from the veteran's rating."
+          }
+        }
+      ],
+      "requirements": [
+        {
+          "requirement_type": "document",
+          "description": "VA Form 26-4555"
+        },
+        {
+          "requirement_type": "document",
+          "description": "DD-214 and VA disability rating letter"
+        }
+      ]
+    },
+    {
+      "slug": "pathways-home-mod",
+      "name": "Indiana PathWays for Aging waiver: home modifications",
+      "administering_entity": "Indiana FSSA, through the Area Agency on Aging",
+      "reach": "state",
+      "program_type": "free_service",
+      "description": "Medicaid waiver service paying for medically necessary accessibility changes for people 60 and older on Medicaid.",
+      "benefit_summary": "Up to $20,000 lifetime, plus $1,000 a year for repairs. Covers ramps, lifts, wider doorways, and bathroom and kitchen changes.",
+      "max_amount": 20000,
+      "strings_attached": "Basic, medically necessary work only; no upgrades. Two bids needed for work over $5,000.",
+      "how_to_apply": "Call the Area Agency on Aging, which assesses eligibility for the waiver.",
+      "call_script": "I'm calling for a homeowner age {age} on Medicaid who needs help with {repair} to stay safely at home. Can you assess them for PathWays waiver home modifications?",
+      "source_url": "https://in.gov/fssa/ompp/files/Home-Modification.pdf",
+      "funding_status": "open",
+      "status_note": "Waiver waitlists may apply.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [],
+      "contacts": [
+        {
+          "label": "CICOA Aging & Disability Resource Center",
+          "phone": "317-803-6131 or 800-432-2422",
+          "website": "https://cicoa.org/resource-center/medicaid-waivers/",
+          "county_fips": "18097"
+        },
+        {
+          "label": "CICOA Aging & Disability Resource Center",
+          "phone": "317-803-6131 or 800-432-2422",
+          "county_fips": "18057"
+        },
+        {
+          "label": "CICOA Aging & Disability Resource Center",
+          "phone": "317-803-6131 or 800-432-2422",
+          "county_fips": "18063"
+        },
+        {
+          "label": "Indiana PathWays for Aging line",
+          "phone": "877-284-9294",
+          "website": "https://www.in.gov/pathways/"
+        },
+        {
+          "label": "Area Agency on Aging statewide line",
+          "phone": "800-713-9023"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Home is in Indiana",
+          "rule_config": {
+            "scope_level": "state",
+            "allowed_values": [
+              "IN"
+            ]
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Age 60 or older",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "age_oldest_owner",
+                "op": "gte",
+                "value": 60
+              }
+            ],
+            "fail_message": "For people age 60 and older",
+            "unknown_message": "Owner's age not recorded."
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "On Medicaid",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "receives_medicaid",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Requires Medicaid",
+            "unknown_message": "Ask whether the homeowner is on Medicaid."
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Accessibility change",
+          "rule_config": {
+            "allowed": [
+              "ramp",
+              "accessibility",
+              "safety_fixes"
+            ]
+          }
+        },
+        {
+          "rule_type": "external_verification",
+          "description": "Nursing-facility level of care",
+          "rule_config": {
+            "message": "The Area Agency on Aging must assess that the homeowner needs a nursing-facility level of care."
+          }
+        }
+      ],
+      "requirements": [
+        {
+          "requirement_type": "step",
+          "description": "Area Agency on Aging eligibility assessment"
+        }
+      ]
+    },
+    {
+      "slug": "cicoa-home-mods",
+      "name": "CICOA home accessibility modifications",
+      "administering_entity": "CICOA Aging & In-Home Solutions",
+      "reach": "nonprofit",
+      "program_type": "free_service",
+      "description": "Area Agency on Aging for central Indiana; assesses the home and matches a funding source for safety and accessibility changes.",
+      "benefit_summary": "Grab bars, handrails, wheelchair ramps, wider doorways, lever handles and similar changes.",
+      "max_amount": null,
+      "strings_attached": "Depends on the funding source CICOA matches.",
+      "how_to_apply": "Call the Aging & Disability Resource Center for a home assessment. The homeowner should be on the call to consent.",
+      "call_script": "I'm calling with {name}, a homeowner age {age} in {county} County, who needs help with {repair}. They're on the line to consent. Can we schedule a home safety assessment?",
+      "source_url": "https://cicoa.org/services/home-accessibility-modifications/",
+      "funding_status": "open",
+      "status_note": "Funding is limited, per the City of Indianapolis.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [],
+      "contacts": [
+        {
+          "label": "CICOA Aging & Disability Resource Center",
+          "phone": "317-803-6131 or 800-432-2422",
+          "website": "https://cicoa.org/resource-center/online-request-referral-form/",
+          "address": "8440 Woodfield Crossing Blvd, Suite 175, Indianapolis, IN 46240"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Home is in CICOA's eight-county area",
+          "rule_config": {
+            "scope_level": "county",
+            "allowed_values": [
+              "18097",
+              "18011",
+              "18057",
+              "18059",
+              "18145",
+              "18081",
+              "18109",
+              "18063"
+            ],
+            "fail_message": "Outside CICOA's service area; use the local Area Agency on Aging"
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Age 60 or older, or has a disability",
+          "rule_config": {
+            "mode": "any",
+            "checks": [
+              {
+                "field": "age_oldest_owner",
+                "op": "gte",
+                "value": 60
+              },
+              {
+                "field": "has_disability",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "For people 60 and older or with a disability",
+            "unknown_message": "Record the owner's age or disability status."
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Safety or accessibility change",
+          "rule_config": {
+            "allowed": [
+              "ramp",
+              "accessibility",
+              "safety_fixes"
+            ]
+          }
+        }
+      ],
+      "requirements": [
+        {
+          "requirement_type": "step",
+          "description": "Homeowner on the phone to consent to screening"
+        }
+      ]
+    },
+    {
+      "slug": "cicoa-oahmp",
+      "name": "CICOA Older Americans Home Modification Program",
+      "administering_entity": "CICOA Aging & In-Home Solutions (HUD-funded)",
+      "reach": "nonprofit",
+      "program_type": "free_service",
+      "description": "HUD-funded small safety fixes for homeowners age 62 and older.",
+      "benefit_summary": "Grab bars, handrails, lighting, comfort-height toilets, modular ramps, gutter repair and similar small fixes.",
+      "max_amount": null,
+      "strings_attached": "Small fixes only. Excludes roofs, new furnaces, permanent ramps, door widening, walk-in showers and major rewiring.",
+      "how_to_apply": "Complete CICOA's online application.",
+      "call_script": "I'm helping {name}, age {age}, who owns and lives in their home and needs help with {repair}. What is the income limit for the Older Americans Home Modification Program, and can we apply?",
+      "source_url": "https://cicoa.org/services/home-accessibility-modifications/",
+      "funding_status": "open",
+      "status_note": null,
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [
+        "What is the income limit?"
+      ],
+      "contacts": [
+        {
+          "label": "CICOA online application",
+          "website": "https://secure.blueink.com/portal/QNjNhGHvcXDPrOPf7A1KEIFw"
+        },
+        {
+          "label": "CICOA Aging & Disability Resource Center",
+          "phone": "317-803-6131"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Home is in CICOA's eight-county area",
+          "rule_config": {
+            "scope_level": "county",
+            "allowed_values": [
+              "18097",
+              "18011",
+              "18057",
+              "18059",
+              "18145",
+              "18081",
+              "18109",
+              "18063"
+            ],
+            "fail_message": "Outside CICOA's service area"
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Owner age 62 or older who lives in the home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "age_oldest_owner",
+                "op": "gte",
+                "value": 62
+              },
+              {
+                "field": "owner_on_deed",
+                "op": "is_true"
+              },
+              {
+                "field": "primary_residence",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "For owner-occupants age 62 and older",
+            "unknown_message": "Confirm age 62+, ownership and that the owner lives in the home."
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Small safety fix",
+          "rule_config": {
+            "allowed": [
+              "safety_fixes",
+              "accessibility",
+              "ramp"
+            ]
+          }
+        },
+        {
+          "rule_type": "external_verification",
+          "description": "Income limit",
+          "rule_config": {
+            "message": "CICOA's page doesn't publish the income limit; confirm it in the application."
+          }
+        }
+      ],
+      "requirements": []
+    },
+    {
+      "slug": "cagi-weatherization",
+      "name": "Weatherization Assistance Program (CAGI)",
+      "administering_entity": "Community Action of Greater Indianapolis (IHCDA program)",
+      "reach": "nonprofit",
+      "program_type": "free_service",
+      "description": "Free energy audit and efficiency work; can repair or replace an unsafe furnace or water heater.",
+      "benefit_summary": "Insulation, air and duct sealing, and furnace or water heater repair or replacement where testing calls for it.",
+      "max_amount": null,
+      "strings_attached": "Homes weatherized before through this program may not qualify again.",
+      "how_to_apply": "Apply through CAGI's online portal or call the weatherization office.",
+      "call_script": "I'm calling for a homeowner in {county} County who has {repair}. Their household income is about ${income} for a household of {size}. Can they apply for weatherization?",
+      "source_url": "https://cagi-in.org/weatherization/",
+      "funding_status": "open",
+      "status_note": null,
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [],
+      "contacts": [
+        {
+          "label": "CAGI Weatherization office (Beverly Smith)",
+          "phone": "317-342-2007",
+          "email": "bsmith@cagi-in.org",
+          "website": "https://inclient.waplink.org/",
+          "address": "3266 N. Meridian St., Indianapolis, IN 46208",
+          "notes": "The City of Indianapolis lists Tanya Hollingsworth, 317-524-6856, as a second contact."
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Home is in Boone, Hamilton, Hendricks or Marion County",
+          "rule_config": {
+            "scope_level": "county",
+            "allowed_values": [
+              "18097",
+              "18057",
+              "18063",
+              "18011"
+            ],
+            "fail_message": "CAGI serves Boone, Hamilton, Hendricks and Marion counties; use the county's community action agency"
+          }
+        },
+        {
+          "rule_type": "income_threshold",
+          "description": "Income at or below 200% of poverty, or on Energy Assistance, SSI or TANF",
+          "rule_config": {
+            "lookup_table": "fpl_200_2026",
+            "comparator": "lte",
+            "label": "200% of the poverty guideline",
+            "categorical_fields": [
+              "receives_energy_assistance",
+              "receives_ssi",
+              "receives_tanf"
+            ]
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Heating, water heater or energy efficiency",
+          "rule_config": {
+            "allowed": [
+              "heating",
+              "water_heater",
+              "insulation_weatherization"
+            ]
+          }
+        },
+        {
+          "rule_type": "external_verification",
+          "description": "Home condition",
+          "rule_config": {
+            "message": "The home must be safe to weatherize and not weatherized before through this program."
+          }
+        }
+      ],
+      "requirements": [
+        {
+          "requirement_type": "document",
+          "description": "Proof of income for everyone in the home, or proof of Energy Assistance, SSI or TANF"
+        }
+      ]
+    },
+    {
+      "slug": "indianapolis-hrp",
+      "name": "City of Indianapolis Homeowner Repair Program",
+      "administering_entity": "City of Indianapolis, Department of Metropolitan Development",
+      "reach": "city",
+      "program_type": "forgivable_loan",
+      "description": "Critical home repairs and accessibility changes for income-qualified owners inside the City of Indianapolis.",
+      "benefit_summary": "Roofs, windows, siding, furnaces, air conditioning, plumbing, electrical and accessibility, at no upfront cost.",
+      "max_amount": null,
+      "strings_attached": "30-year forgivable lien, no payments and no interest. Repaid from sale proceeds if sold sooner; an heir who lives in the home can finish the term. City contractors only; every home is tested for radon.",
+      "how_to_apply": "Pre-screen application linked from the city's program page.",
+      "call_script": "I'm calling for a homeowner inside Indianapolis who needs help with {repair}. When do non-emergency applications reopen, and can we get on a notification list?",
+      "source_url": "https://www.indy.gov/activity/home-repair-program",
+      "funding_status": "closed",
+      "status_note": "Closed to new non-emergency applications.",
+      "reopens_note": "Expected to reopen in 2027 (city page, October 2026). Emergencies still considered: see the SEND emergency route.",
+      "is_emergency_route": false,
+      "open_questions": [
+        "Reopening date for 2027"
+      ],
+      "contacts": [
+        {
+          "label": "City of Indianapolis Homeowner Repair team",
+          "phone": "317-327-4663",
+          "email": "indyhrp@indy.gov",
+          "website": "https://www.indy.gov/activity/home-repair-program",
+          "notes": "Not the same as the private company 'Indy Home Repair'."
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Inside the City of Indianapolis",
+          "rule_config": {
+            "scope_level": "flag",
+            "field": "in_city_indianapolis",
+            "value": true,
+            "fail_message": "Only for homes inside the City of Indianapolis (not Speedway, Beech Grove, Lawrence or Southport)",
+            "unknown_message": "Confirm the address is inside the City of Indianapolis, not Speedway, Beech Grove, Lawrence or Southport."
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Owner of record who lives in the home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "owner_on_deed",
+                "op": "is_true"
+              },
+              {
+                "field": "primary_residence",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Must be the owner of record and live in the home",
+            "unknown_message": "Confirm ownership and residence."
+          }
+        },
+        {
+          "rule_type": "property_attribute",
+          "description": "Mortgage and property taxes current",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "taxes_current",
+                "op": "is_true"
+              },
+              {
+                "field": "mortgage_current",
+                "op": "not_false"
+              }
+            ],
+            "fail_message": "Property taxes and any mortgage must be current",
+            "unknown_message": "Confirm property taxes and any mortgage are current."
+          }
+        },
+        {
+          "rule_type": "income_threshold",
+          "description": "Income at or below 80% of area median income",
+          "rule_config": {
+            "lookup_table": "in_80ami_2026",
+            "comparator": "lte",
+            "label": "80% of area median income"
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Essential repair or accessibility",
+          "rule_config": {
+            "allowed": [
+              "roof",
+              "windows_doors",
+              "heating",
+              "cooling",
+              "water_heater",
+              "plumbing_sewer",
+              "electrical",
+              "structural",
+              "ramp",
+              "accessibility",
+              "storm_damage"
+            ]
+          }
+        }
+      ],
+      "requirements": [
+        {
+          "requirement_type": "document",
+          "description": "For every adult in the home, within two weeks of applying: latest tax return, this year's Social Security benefit letter, two months of pay stubs if working, six months of statements for each bank account, latest retirement account statement"
+        },
+        {
+          "requirement_type": "document",
+          "description": "Mortgage statement and homeowners insurance cover page"
+        },
+        {
+          "requirement_type": "condition",
+          "description": "Homeowner can withdraw any time before signing the contract and lien"
+        }
+      ]
+    },
+    {
+      "slug": "send-emergency",
+      "name": "Indianapolis emergency home repair (City program through SEND)",
+      "administering_entity": "City of Indianapolis, with Southeast Neighborhood Development (SEND)",
+      "reach": "city",
+      "program_type": "forgivable_loan",
+      "description": "Emergency health and safety repairs for owners inside the City of Indianapolis. The city takes the application and forwards emergencies to SEND.",
+      "benefit_summary": "No heat in winter, sewage backup, no water, electrical arcing.",
+      "max_amount": null,
+      "strings_attached": "Same 30-year forgivable lien as the city program; no payments or interest.",
+      "how_to_apply": "Email or call the city's Homeowner Repair team and say it is an emergency.",
+      "call_script": "This is an emergency: a homeowner inside Indianapolis has {repair}. They own and live in the home and their property taxes are current. Can this go to SEND as an emergency repair?",
+      "source_url": "https://www.sendcdc.org/home-repair",
+      "funding_status": "open",
+      "status_note": "Emergency applications still considered while the main city program is closed.",
+      "reopens_note": null,
+      "is_emergency_route": true,
+      "open_questions": [],
+      "contacts": [
+        {
+          "label": "City of Indianapolis Homeowner Repair team (takes the application)",
+          "phone": "317-327-4663",
+          "email": "indyhrp@indy.gov"
+        },
+        {
+          "label": "SEND main office",
+          "phone": "317-634-5079",
+          "email": "send@sendcdc.org",
+          "address": "3230 Southeastern Ave, Indianapolis, IN 46203"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Inside the City of Indianapolis",
+          "rule_config": {
+            "scope_level": "flag",
+            "field": "in_city_indianapolis",
+            "value": true,
+            "fail_message": "Only for homes inside the City of Indianapolis",
+            "unknown_message": "Confirm the address is inside the City of Indianapolis, not Speedway, Beech Grove, Lawrence or Southport."
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "A true emergency",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "urgency",
+                "op": "eq",
+                "value": "emergency"
+              }
+            ],
+            "fail_message": "Only for emergencies such as no heat in winter, sewage backup or no water",
+            "unknown_message": "Record how urgent the repair is."
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Owner of record who lives in the home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "owner_on_deed",
+                "op": "is_true"
+              },
+              {
+                "field": "primary_residence",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Must be the owner of record and live in the home",
+            "unknown_message": "Confirm ownership and residence."
+          }
+        },
+        {
+          "rule_type": "property_attribute",
+          "description": "Property taxes current",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "taxes_current",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Property taxes must be current",
+            "unknown_message": "Confirm property taxes are current."
+          }
+        },
+        {
+          "rule_type": "income_threshold",
+          "description": "Income at or below 80% of area median income",
+          "rule_config": {
+            "lookup_table": "in_80ami_2026",
+            "comparator": "lte",
+            "label": "80% of area median income"
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Emergency system failure",
+          "rule_config": {
+            "allowed": [
+              "heating",
+              "plumbing_sewer",
+              "electrical",
+              "water_heater"
+            ]
+          }
+        }
+      ],
+      "requirements": []
+    },
+    {
+      "slug": "hrg-home-repair",
+      "name": "Home Repairs for Good: Home Repair Program",
+      "administering_entity": "Home Repairs for Good",
+      "reach": "nonprofit",
+      "program_type": "free_service",
+      "description": "Free critical repairs for low-income homeowners 62 and older or with a disability in Marion County, mostly by volunteers.",
+      "benefit_summary": "Handrails, grab bars, ramps, furnace repair or replacement, plumbing, water heaters, small roof and electrical repairs, gutters, siding.",
+      "max_amount": null,
+      "strings_attached": "None stated.",
+      "how_to_apply": "Call to request a repair.",
+      "call_script": "I'm calling for {name}, age {age}, who owns their home in Marion County and needs help with {repair}. Their household income is about ${income} a year for a household of {size}. Which addresses do you serve, and which year's income limits apply?",
+      "source_url": "https://www.homerepairsforgood.org/home-repair-program",
+      "funding_status": "open",
+      "status_note": null,
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [
+        "Which Marion County addresses get the full repair list?",
+        "Which year's income limits apply? (posted chart uses 2023 figures)"
+      ],
+      "contacts": [
+        {
+          "label": "Home Repairs for Good",
+          "phone": "317-286-2740",
+          "address": "3421 N Park Ave, Indianapolis, IN 46205",
+          "website": "https://www.homerepairsforgood.org/"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Marion County",
+          "rule_config": {
+            "scope_level": "county",
+            "allowed_values": [
+              "18097"
+            ],
+            "fail_message": "Marion County only"
+          }
+        },
+        {
+          "rule_type": "geographic_scope",
+          "description": "Inside I-465 (focus area)",
+          "rule_config": {
+            "scope_level": "flag",
+            "field": "inside_i465",
+            "value": true,
+            "soft": true,
+            "fail_message": "Outside I-465: the page limits service there to health-department citations and large yard projects. Ask.",
+            "unknown_message": "Record whether the home is inside I-465; service outside it may be limited."
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Age 62 or older, or has a disability",
+          "rule_config": {
+            "mode": "any",
+            "checks": [
+              {
+                "field": "age_oldest_owner",
+                "op": "gte",
+                "value": 62
+              },
+              {
+                "field": "has_disability",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "For homeowners 62 and older or with a disability",
+            "unknown_message": "Record the owner's age or disability status."
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Owns the home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "owner_on_deed",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Must own the home",
+            "unknown_message": "Confirm the homeowner is on the deed."
+          }
+        },
+        {
+          "rule_type": "income_threshold",
+          "description": "Income at or below 150% of poverty",
+          "rule_config": {
+            "lookup_table": "fpl_150_2026",
+            "comparator": "lte",
+            "label": "150% of the poverty guideline"
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Critical repair",
+          "rule_config": {
+            "allowed": [
+              "ramp",
+              "accessibility",
+              "safety_fixes",
+              "heating",
+              "plumbing_sewer",
+              "water_heater",
+              "electrical",
+              "roof",
+              "windows_doors",
+              "lead_mold"
+            ]
+          }
+        }
+      ],
+      "requirements": []
+    },
+    {
+      "slug": "hrg-home-stabilization",
+      "name": "Home Repairs for Good: Home Stabilization Program",
+      "administering_entity": "Home Repairs for Good",
+      "reach": "nonprofit",
+      "program_type": "free_service",
+      "description": "Larger repairs for a small number of homes each year, layered with other programs where possible.",
+      "benefit_summary": "Jobs over $5,000, averaging about $15,000: roof replacement, sewer replacement, major plumbing or electrical work.",
+      "max_amount": null,
+      "strings_attached": "None stated. Limited by available funding.",
+      "how_to_apply": "Call to request services.",
+      "call_script": "I'm calling for {name}, age {age}, in Marion County, who needs help with {repair}, a larger job. Could the Home Stabilization Program take it on, and is the address in your focus area?",
+      "source_url": "https://www.homerepairsforgood.org/home-stabilization-program",
+      "funding_status": "open",
+      "status_note": "Limited by available funding.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [
+        "Is the address inside the focus area?",
+        "Which year's income limits apply?"
+      ],
+      "contacts": [
+        {
+          "label": "Home Repairs for Good",
+          "phone": "317-286-2740",
+          "address": "3421 N Park Ave, Indianapolis, IN 46205"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Marion County",
+          "rule_config": {
+            "scope_level": "county",
+            "allowed_values": [
+              "18097"
+            ],
+            "fail_message": "Marion County only"
+          }
+        },
+        {
+          "rule_type": "geographic_scope",
+          "description": "Inside I-465 (focus area north of Washington Street)",
+          "rule_config": {
+            "scope_level": "flag",
+            "field": "inside_i465",
+            "value": true,
+            "soft": true,
+            "fail_message": "Outside the focus area (inside I-465, north of Washington Street). Ask.",
+            "unknown_message": "Focus area is inside I-465, north of Washington Street; confirm the address."
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Age 62 or older, or has a disability",
+          "rule_config": {
+            "mode": "any",
+            "checks": [
+              {
+                "field": "age_oldest_owner",
+                "op": "gte",
+                "value": 62
+              },
+              {
+                "field": "has_disability",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "For homeowners 62 and older or with a disability",
+            "unknown_message": "Record the owner's age or disability status."
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Owns the home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "owner_on_deed",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Must own the home",
+            "unknown_message": "Confirm the homeowner is on the deed."
+          }
+        },
+        {
+          "rule_type": "income_threshold",
+          "description": "Income at or below 150% of poverty",
+          "rule_config": {
+            "lookup_table": "fpl_150_2026",
+            "comparator": "lte",
+            "label": "150% of the poverty guideline"
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Major repair",
+          "rule_config": {
+            "allowed": [
+              "roof",
+              "heating",
+              "plumbing_sewer",
+              "electrical",
+              "structural",
+              "water_heater"
+            ]
+          }
+        }
+      ],
+      "requirements": []
+    },
+    {
+      "slug": "rebuilding-together-indy",
+      "name": "Rebuilding Together Indianapolis",
+      "administering_entity": "Rebuilding Together Indianapolis",
+      "reach": "nonprofit",
+      "program_type": "free_service",
+      "description": "Free volunteer repairs for low-income, older or disabled homeowners in one selected neighborhood each cycle.",
+      "benefit_summary": "Accessibility, safety, exterior, weatherization and general repairs around Rebuild Day (next: April 24, 2027).",
+      "max_amount": null,
+      "strings_attached": "Not every applicant is selected.",
+      "how_to_apply": "Online homeowner application, email, or mail to 6510 Telecom Dr, Suite 200, Indianapolis, IN 46278.",
+      "call_script": "I'm helping a homeowner in {county} County who needs help with {repair}. Is their address inside your current neighborhood, and is the application open?",
+      "source_url": "https://www.rebuildingtogetherindy.org/who-we-serve",
+      "funding_status": "open",
+      "status_note": "Annual cycle tied to Rebuild Day.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [],
+      "contacts": [
+        {
+          "label": "Rebuilding Together Indianapolis",
+          "phone": "219-799-1227",
+          "email": "info@rebuildingtogetherindy.org",
+          "website": "https://forms.office.com/r/6X4A31qeCV"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Marion County",
+          "rule_config": {
+            "scope_level": "county",
+            "allowed_values": [
+              "18097"
+            ],
+            "fail_message": "Serves Indianapolis neighborhoods"
+          }
+        },
+        {
+          "rule_type": "property_attribute",
+          "description": "Has homeowners insurance",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "insurance_current",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Requires homeowners insurance",
+            "unknown_message": "Confirm the home is insured."
+          }
+        },
+        {
+          "rule_type": "external_verification",
+          "description": "Selected neighborhood",
+          "rule_config": {
+            "message": "Only homes inside the selected neighborhood qualify; the city page names the Near Northwest area. Confirm the address."
+          }
+        }
+      ],
+      "requirements": []
+    },
+    {
+      "slug": "englewood-cdc",
+      "name": "Englewood CDC owner-occupied repair",
+      "administering_entity": "Englewood Community Development Corporation",
+      "reach": "nonprofit",
+      "program_type": "free_service",
+      "description": "Repairs for low-income east-side owners with deferred maintenance or dangerous conditions.",
+      "benefit_summary": "Health, safety, accessibility and essential-system repairs.",
+      "max_amount": null,
+      "strings_attached": "Lien or cost terms not stated: ask.",
+      "how_to_apply": "Fill out the intake form on their site.",
+      "call_script": "I'm calling for a homeowner in ZIP {zip} who needs help with {repair}. Is there a lien, and are you taking applications now?",
+      "source_url": "https://englewoodcdc.com/our-work/affordable-housing/ownership-and-repairs/",
+      "funding_status": "unknown",
+      "status_note": "The page says it 'has opportunities' but not whether applications are open.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [
+        "Is a lien placed on the home?",
+        "Are applications open now?"
+      ],
+      "contacts": [
+        {
+          "label": "Englewood CDC",
+          "phone": "317-912-0060",
+          "email": "homes@englewoodcdc.com",
+          "address": "57 N Rural St, Indianapolis, IN 46201",
+          "website": "https://docs.google.com/forms/d/e/1FAIpQLSfdp_2Dza7Em4qVEmDoDPJsP7Op3EitIvOBOg6a_SwIKYF0RQ/viewform"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "East-side ZIP code",
+          "rule_config": {
+            "scope_level": "zip",
+            "allowed_values": [
+              "46218",
+              "46219",
+              "46226",
+              "46229",
+              "46235"
+            ],
+            "fail_message": "Outside Englewood CDC's ZIP codes"
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "On the deed and lives in the home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "owner_on_deed",
+                "op": "is_true"
+              },
+              {
+                "field": "primary_residence",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Must be on the deed and live in the home",
+            "unknown_message": "Confirm ownership and residence."
+          }
+        },
+        {
+          "rule_type": "property_attribute",
+          "description": "Not a land contract",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "title_issue",
+                "op": "neq",
+                "value": "land_contract"
+              }
+            ],
+            "fail_message": "Land contracts don't qualify",
+            "unknown_message": "Confirm how the home is titled."
+          }
+        },
+        {
+          "rule_type": "income_threshold",
+          "description": "Income under 80% of area median income",
+          "rule_config": {
+            "lookup_table": "in_80ami_2026",
+            "comparator": "lte",
+            "label": "80% of area median income"
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Health, safety, accessibility or essential system",
+          "rule_config": {
+            "allowed": [
+              "roof",
+              "heating",
+              "cooling",
+              "water_heater",
+              "plumbing_sewer",
+              "electrical",
+              "structural",
+              "windows_doors",
+              "ramp",
+              "accessibility",
+              "safety_fixes",
+              "lead_mold"
+            ]
+          }
+        },
+        {
+          "rule_type": "external_verification",
+          "description": "Exact boundary",
+          "rule_config": {
+            "message": "Check the exact service boundary on Englewood CDC's map."
+          }
+        }
+      ],
+      "requirements": []
+    },
+    {
+      "slug": "saws-ramps",
+      "name": "Servants at Work (SAWs) wheelchair ramps",
+      "administering_entity": "Servants at Work, Inc.",
+      "reach": "nonprofit",
+      "program_type": "free_service",
+      "description": "Free custom wooden access ramps for low-income households with a permanent mobility need.",
+      "benefit_summary": "A new ramp built to ADA standards, usually installed in 4 to 6 hours.",
+      "max_amount": null,
+      "strings_attached": "One ramp per person in a lifetime. SAWs doesn't repair or remove other ramps. Approved applicants wait on a list.",
+      "how_to_apply": "Online ramp application; an agency or case manager can apply on the person's behalf.",
+      "call_script": "I'm applying on behalf of {name} in {county} County, who has a permanent need for a ramp. Household income is about ${income} a year for a household of {size}.",
+      "source_url": "https://www.sawsramps.org/apply-for-ramp-az-in-nv/",
+      "funding_status": "open",
+      "status_note": "No published wait time.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [],
+      "contacts": [
+        {
+          "label": "SAWs ramp application",
+          "phone": "317-844-7664",
+          "email": "admin@sawsramps.org",
+          "website": "https://www.sawsramps.org/apply-for-ramp-az-in-nv/",
+          "address": "8427 Zionsville Rd, Indianapolis, IN 46268"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Home is in Indiana",
+          "rule_config": {
+            "scope_level": "state",
+            "allowed_values": [
+              "IN"
+            ]
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Needs a ramp",
+          "rule_config": {
+            "allowed": [
+              "ramp"
+            ]
+          }
+        },
+        {
+          "rule_type": "property_attribute",
+          "description": "Not a multi-unit building with a shared entrance",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "home_type",
+                "op": "neq",
+                "value": "condo_multiunit"
+              }
+            ],
+            "fail_message": "No ramps in multi-unit buildings with a shared entrance",
+            "unknown_message": "Record the home type."
+          }
+        },
+        {
+          "rule_type": "external_verification",
+          "description": "Permanent need and income",
+          "rule_config": {
+            "message": "Need must be permanent. SAWs measures financial hardship against area median income but doesn't publish the figure."
+          }
+        }
+      ],
+      "requirements": []
+    },
+    {
+      "slug": "fhlbi-revive",
+      "name": "FHLBank Indianapolis Revive home repair grant",
+      "administering_entity": "Federal Home Loan Bank of Indianapolis, through member banks",
+      "reach": "state",
+      "program_type": "grant",
+      "description": "Annual grant for deferred maintenance and accessibility, applied for through a participating member bank or credit union.",
+      "benefit_summary": "Up to $15,000 (member bank's 2025 terms), no repayment. Roofs, HVAC, water heaters, windows, siding, ramps, grab bars and more.",
+      "max_amount": 15000,
+      "strings_attached": "The homeowner names the contractor and supplies two itemized bids; payment is by checks made out to homeowner and contractor together. No second grant on the same property within 5 years.",
+      "how_to_apply": "Through a participating member bank or credit union when the round opens. FHLBank does not deal with households.",
+      "call_script": "I'm helping a homeowner in {county} County who needs help with {repair}. Will you take Revive home repair grant applications for Marion County in 2027, and when does the round open?",
+      "source_url": "https://www.fhlbi.com/services/community-programs/revive-home-repair-grant/",
+      "funding_status": "closed",
+      "status_note": "2026 funds exhausted.",
+      "reopens_note": "Annual round; a member bank says check back in early 2027.",
+      "is_emergency_route": false,
+      "open_questions": [
+        "Which member bank takes Marion County applications in 2027?"
+      ],
+      "contacts": [
+        {
+          "label": "Community First Bank of Indiana (nearest member lead)",
+          "phone": "765-236-0600",
+          "notes": "Confirm it takes Marion County applicants."
+        },
+        {
+          "label": "FHLBank Indianapolis Revive page",
+          "website": "https://www.fhlbi.com/services/community-programs/revive-home-repair-grant/"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "homeowner_status",
+          "description": "Owns and lives in the home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "owner_on_deed",
+                "op": "is_true"
+              },
+              {
+                "field": "primary_residence",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Must own the home and live in it",
+            "unknown_message": "Confirm ownership and residence."
+          }
+        },
+        {
+          "rule_type": "property_attribute",
+          "description": "Mortgage and taxes paid as agreed; deeded home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "taxes_current",
+                "op": "is_true"
+              },
+              {
+                "field": "mortgage_current",
+                "op": "not_false"
+              },
+              {
+                "field": "home_type",
+                "op": "neq",
+                "value": "manufactured_rented_lot"
+              }
+            ],
+            "fail_message": "Taxes and mortgage must be current, and a manufactured home must be deeded with its land",
+            "unknown_message": "Confirm taxes, mortgage and home type."
+          }
+        },
+        {
+          "rule_type": "income_threshold",
+          "description": "Income at or below 80% of area median income",
+          "rule_config": {
+            "lookup_table": "in_80ami_2026",
+            "comparator": "lte",
+            "label": "80% of area median income"
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Deferred maintenance or accessibility",
+          "rule_config": {
+            "allowed": [
+              "roof",
+              "heating",
+              "cooling",
+              "water_heater",
+              "septic_well",
+              "windows_doors",
+              "insulation_weatherization",
+              "ramp",
+              "accessibility",
+              "safety_fixes",
+              "lead_mold"
+            ]
+          }
+        }
+      ],
+      "requirements": [
+        {
+          "requirement_type": "document",
+          "description": "Two comparable, itemized contractor bids and before photos"
+        },
+        {
+          "requirement_type": "document",
+          "description": "Deed, mortgage statement, proof of paid property taxes and homeowners insurance declaration page"
+        }
+      ]
+    },
+    {
+      "slug": "indiana-energy-saver",
+      "name": "Indiana Energy Saver Program (home energy rebates)",
+      "administering_entity": "Indiana Office of Energy Development",
+      "reach": "state",
+      "program_type": "rebate",
+      "description": "Discounts on energy-efficiency upgrades installed by a qualified contractor.",
+      "benefit_summary": "Below 80% of area median income, the state plan gives 80% of a whole-home project up to $4,000 or $8,000, and 100% of heat-pump, appliance and wiring costs up to $14,000.",
+      "max_amount": 14000,
+      "strings_attached": "Don't start work before approval: work begun outside the program is not rebated. Amounts come from the state's planning presentation and need confirming.",
+      "how_to_apply": "Register on the portal and complete the pre-screening.",
+      "call_script": "I'm helping a homeowner who has {repair} and may need new equipment. Household income is about ${income} for a household of {size}. Which rebate tier applies, and what are the current amounts?",
+      "source_url": "https://portal.indianaenergysaver.com/en-US/",
+      "funding_status": "open",
+      "status_note": "Taking pre-screenings.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [
+        "Are the rebate amounts in the state plan the ones in force?"
+      ],
+      "contacts": [
+        {
+          "label": "Indiana Energy Saver support",
+          "phone": "855-446-7283",
+          "website": "https://portal.indianaenergysaver.com/en-US/"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Home is in Indiana",
+          "rule_config": {
+            "scope_level": "state",
+            "allowed_values": [
+              "IN"
+            ]
+          }
+        },
+        {
+          "rule_type": "property_attribute",
+          "description": "Not a duplex or multi-unit condominium",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "home_type",
+                "op": "not_in",
+                "value": [
+                  "duplex",
+                  "condo_multiunit"
+                ]
+              }
+            ],
+            "fail_message": "Not open to duplexes or condominiums in multi-unit buildings",
+            "unknown_message": "Record the home type."
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Heating, cooling, water heater, insulation or wiring",
+          "rule_config": {
+            "allowed": [
+              "heating",
+              "cooling",
+              "water_heater",
+              "insulation_weatherization",
+              "electrical"
+            ]
+          }
+        },
+        {
+          "rule_type": "external_verification",
+          "description": "Income tier and amounts",
+          "rule_config": {
+            "message": "Rebate size depends on income (80% and 150% of area median income tiers); confirm current amounts."
+          }
+        }
+      ],
+      "requirements": [
+        {
+          "requirement_type": "document",
+          "description": "Proof of ownership, proof of income or a benefit letter dated within 12 months, and up to 13 months of utility records if asked"
+        }
+      ]
+    },
+    {
+      "slug": "inhp-repair-loan",
+      "name": "INHP home repair loan",
+      "administering_entity": "Indianapolis Neighborhood Housing Partnership",
+      "reach": "nonprofit",
+      "program_type": "low_interest_loan",
+      "description": "Repair loans for Marion County owner-occupants; earlier rounds were interest-free for seniors.",
+      "benefit_summary": "Repair loan; terms depend on the funding source.",
+      "max_amount": null,
+      "strings_attached": "A loan, when available.",
+      "how_to_apply": "Register on INHP's site when the program returns.",
+      "call_script": "Is the INHP home repair loan program open again?",
+      "source_url": "https://www.inhp.org/home-repair-loans/eligibility",
+      "funding_status": "closed",
+      "status_note": "Suspended: funds exhausted.",
+      "reopens_note": "INHP says check back in 2027.",
+      "is_emergency_route": false,
+      "open_questions": [],
+      "contacts": [
+        {
+          "label": "INHP",
+          "phone": "317-610-4663",
+          "website": "https://www.inhp.org/home-repair-loans"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Marion County",
+          "rule_config": {
+            "scope_level": "county",
+            "allowed_values": [
+              "18097"
+            ],
+            "fail_message": "Marion County only"
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "On the title and lives in the home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "owner_on_deed",
+                "op": "is_true"
+              },
+              {
+                "field": "primary_residence",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Must be on the title and live in the home",
+            "unknown_message": "Confirm ownership and residence."
+          }
+        },
+        {
+          "rule_type": "property_attribute",
+          "description": "Mortgage, taxes and insurance current",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "taxes_current",
+                "op": "is_true"
+              },
+              {
+                "field": "insurance_current",
+                "op": "is_true"
+              },
+              {
+                "field": "mortgage_current",
+                "op": "not_false"
+              }
+            ],
+            "fail_message": "Mortgage, taxes and insurance must be current",
+            "unknown_message": "Confirm mortgage, taxes and insurance are current."
+          }
+        },
+        {
+          "rule_type": "income_threshold",
+          "description": "Income under 80% of area median income",
+          "rule_config": {
+            "lookup_table": "in_80ami_2026",
+            "comparator": "lte",
+            "label": "80% of area median income"
+          }
+        }
+      ],
+      "requirements": []
+    },
+    {
+      "slug": "township-trustee",
+      "name": "Township trustee emergency assistance",
+      "administering_entity": "The township trustee for the client's township",
+      "reach": "county",
+      "program_type": "referral",
+      "description": "Every Indiana township must provide emergency assistance, which can include housing and utility help.",
+      "benefit_summary": "Varies by township.",
+      "max_amount": null,
+      "strings_attached": "Each township sets its own rules.",
+      "how_to_apply": "Call the trustee's office for the client's township.",
+      "call_script": "I'm calling for a homeowner in {township} Township who has an urgent repair: {repair}. What emergency assistance can the trustee provide?",
+      "source_url": "https://liheapch.ncat.org/node/1231",
+      "funding_status": "unknown",
+      "status_note": "Not published; varies by township.",
+      "reopens_note": null,
+      "is_emergency_route": true,
+      "open_questions": [
+        "What will this township cover?"
+      ],
+      "contacts": [
+        {
+          "label": "Indiana 211 (to find the township trustee)",
+          "phone": "211"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Home is in Indiana",
+          "rule_config": {
+            "scope_level": "state",
+            "allowed_values": [
+              "IN"
+            ]
+          }
+        },
+        {
+          "rule_type": "external_verification",
+          "description": "Township rules",
+          "rule_config": {
+            "message": "Each township decides what it covers; call the trustee."
+          }
+        }
+      ],
+      "requirements": []
+    },
+    {
+      "slug": "ihcda-ramp-up",
+      "name": "Ramp Up Indiana",
+      "administering_entity": "IHCDA, through local nonprofit grantees",
+      "reach": "state",
+      "program_type": "free_service",
+      "description": "IHCDA grants to local nonprofits and governments to build exterior ramps for owner-occupants.",
+      "benefit_summary": "One exterior ramp.",
+      "max_amount": null,
+      "strings_attached": "Exterior ramps only.",
+      "how_to_apply": "Through the local grantee; ask IHCDA which nonprofit serves the county.",
+      "call_script": "Which nonprofit holds a Ramp Up Indiana grant for {county} County?",
+      "source_url": "https://www.in.gov/ihcda/program-partners/ramp-up-indiana/",
+      "funding_status": "unknown",
+      "status_note": "Program active (forms revised January 2026); grantee list not published.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [
+        "Which nonprofits hold a grant for Marion, Hendricks and Hamilton counties?"
+      ],
+      "contacts": [
+        {
+          "label": "IHCDA Ramp Up",
+          "email": "rampup@ihcda.in.gov",
+          "phone": "317-232-7777"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "Home is in Indiana",
+          "rule_config": {
+            "scope_level": "state",
+            "allowed_values": [
+              "IN"
+            ]
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Owns and lives in the home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "owner_on_deed",
+                "op": "is_true"
+              },
+              {
+                "field": "primary_residence",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Owner-occupied homes only",
+            "unknown_message": "Confirm ownership and residence."
+          }
+        },
+        {
+          "rule_type": "income_threshold",
+          "description": "Income at or below 80% of area median income",
+          "rule_config": {
+            "lookup_table": "in_80ami_2026",
+            "comparator": "lte",
+            "label": "80% of area median income"
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Needs a ramp",
+          "rule_config": {
+            "allowed": [
+              "ramp"
+            ]
+          }
+        },
+        {
+          "rule_type": "external_verification",
+          "description": "Local grantee",
+          "rule_config": {
+            "message": "Only available where a nonprofit holds a current grant; ask IHCDA which one serves this county."
+          }
+        }
+      ],
+      "requirements": []
+    },
+    {
+      "slug": "ocra-oor",
+      "name": "Owner-Occupied Rehabilitation (OCRA block grant)",
+      "administering_entity": "Indiana Office of Community and Rural Affairs, through local governments",
+      "reach": "state",
+      "program_type": "free_service",
+      "description": "State block grants to smaller cities and counties to run local home repair programs.",
+      "benefit_summary": "Up to $25,000 per home for roofs, heating and cooling, water heaters, electrical and accessibility.",
+      "max_amount": 25000,
+      "strings_attached": "Restrictive covenant on the home; term set by the local program.",
+      "how_to_apply": "Through the local government running a funded program.",
+      "call_script": "Does {county} County, or the client's town, have a current Owner-Occupied Rehabilitation award, and who runs intake?",
+      "source_url": "https://www.in.gov/ocra/cdbg/owner-occupied-rehabilitation-program",
+      "funding_status": "unknown",
+      "status_note": "No published list of funded communities.",
+      "reopens_note": null,
+      "is_emergency_route": false,
+      "open_questions": [
+        "Does this community hold a current award?"
+      ],
+      "contacts": [
+        {
+          "label": "OCRA block grant team",
+          "email": "CDBG@ocra.in.gov",
+          "website": "https://www.in.gov/ocra/cdbg/owner-occupied-rehabilitation-program"
+        }
+      ],
+      "rules": [
+        {
+          "rule_type": "geographic_scope",
+          "description": "A smaller Indiana community (not Marion County)",
+          "rule_config": {
+            "scope_level": "county",
+            "excluded_values": [
+              "18097"
+            ],
+            "allowed_values": null,
+            "fail_message": "Indianapolis and Marion County get block-grant funds directly and are outside this program"
+          }
+        },
+        {
+          "rule_type": "homeowner_status",
+          "description": "Owns and lives in the home",
+          "rule_config": {
+            "mode": "all",
+            "checks": [
+              {
+                "field": "owner_on_deed",
+                "op": "is_true"
+              },
+              {
+                "field": "primary_residence",
+                "op": "is_true"
+              }
+            ],
+            "fail_message": "Owner-occupied homes only",
+            "unknown_message": "Confirm ownership and residence."
+          }
+        },
+        {
+          "rule_type": "repair_type",
+          "description": "Eligible repair",
+          "rule_config": {
+            "allowed": [
+              "roof",
+              "heating",
+              "cooling",
+              "water_heater",
+              "electrical",
+              "ramp",
+              "accessibility"
+            ]
+          }
+        },
+        {
+          "rule_type": "external_verification",
+          "description": "Funded community",
+          "rule_config": {
+            "message": "Only where the local government holds a current award; there is no published list."
+          }
+        }
+      ],
+      "requirements": []
+    }
+  ]
+}

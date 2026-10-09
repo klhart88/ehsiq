@@ -67,11 +67,12 @@ A flag with `"soft": true` turns a mismatch into a question instead of a fail.
 
 | Table | Covers | Source |
 | --- | --- | --- |
-| `in_80ami_2026` | 80% of area median income, Marion County, effective June 1, 2026 | City of Indianapolis Homeowner Repair Program page |
+| `in_80ami_2026` | 80% of area median income, Marion, Hamilton and Hendricks (identical metro limits), effective June 1, 2026 | IHCDA RED Notice 26-17 (Marion also matches the City of Indianapolis repair page) |
+| `in_50ami_2026`, `in_30ami_2026` | 50% and 30% of area median income, same three counties. Loaded ahead of need; no rule uses them yet | IHCDA RED Notice 26-17 |
 | `fpl_150_2026`, `fpl_200_2026` | 150% and 200% of the 2026 poverty guidelines, statewide | Federal Register, January 2026 |
 | `in_usda_very_low`, `in_usda_low` | Empty: USDA confirms income at intake | |
 
-Hamilton and Hendricks 80% limits aren't loaded yet. Until they are, programs using that table show as "Worth a call" for those counties.
+Other counties aren't loaded. Programs using that table show as "Worth a call" there, with income left for the program to confirm. HUD publishes new limits each spring (effective around June 1); update all three AMI tables (80%, 50%, 30%) and their `effective_date` from the same notice table when IHCDA issues it. To use a tier in a program, point its `income_threshold` rule at the table name.
 
 ## Files
 
