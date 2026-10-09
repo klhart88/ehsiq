@@ -10,8 +10,10 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  background: var(--brand-tint);
-  border-radius: var(--radius);
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-soft);
+  border-radius: var(--radius-md);
 }
 .print-bar p { margin: 0; }
 
@@ -22,21 +24,27 @@
   background: #fff;
   border: 1px solid var(--line);
   border-radius: var(--radius);
+  box-shadow: var(--shadow);
   font-size: 19px;
   line-height: 1.55;
 }
-.plan-header { border-bottom: 3px solid var(--brand); padding-bottom: 1rem; margin-bottom: 1.5rem; }
-.plan-kicker { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; font-weight: 700; color: var(--brand); margin: 0; }
+.plan-header { border-bottom: 3px solid var(--red); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+.plan-brand { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; }
+.plan-brand img { width: 40px; height: 40px; }
+.plan-brand-name { font-weight: 800; font-size: 1.05rem; color: var(--charcoal); line-height: 1.1; }
+.plan-brand-name span { color: var(--red); }
+.plan-brand-name small { display: block; font-weight: 600; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.plan-kicker { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; font-weight: 700; color: var(--red); margin: 0; }
 .plan-header h1 { font-size: 2rem; margin: 0.2rem 0; }
 .plan-header p { margin: 0.15rem 0; }
 
 .plan-section { margin: 2rem 0; }
-.plan-section > h2 { font-size: 1.4rem; color: var(--brand-dark); border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; }
+.plan-section > h2 { font-size: 1.4rem; color: var(--charcoal); border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; }
 
 .call-today {
   border: 3px solid var(--danger);
   background: var(--danger-tint);
-  border-radius: var(--radius);
+  border-radius: var(--radius-md);
   padding: 1rem 1.25rem;
   margin: 1.5rem 0;
 }
@@ -80,7 +88,8 @@
   @page { margin: 0.6in; }
   .no-print { display: none !important; }
   body, .plan-page { background: #fff; }
-  .plan { border: 0; margin: 0; padding: 0; max-width: none; font-size: 15pt; }
+  .plan { border: 0; box-shadow: none; border-radius: 0; margin: 0; padding: 0; max-width: none; font-size: 15pt; }
+  .plan, .plan * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .plan a { color: var(--ink); text-decoration: none; }
   .call-today { background: #fff; }
   .plan-section > h2, .plan-program h3, .plan-type, .plan-program dt { break-after: avoid; page-break-after: avoid; }

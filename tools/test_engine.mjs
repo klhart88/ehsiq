@@ -125,7 +125,11 @@ check(loanIndex === -1 || loanIndex === b.length - 1 || b.slice(loanIndex).every
 check(lookup('fpl_150_2026', 'IN', '18097', 1) === 23940, '150% poverty for 1 person should be $23,940');
 check(lookup('fpl_200_2026', 'IN', '18063', 4) === 66000, '200% poverty for 4 should be $66,000');
 check(lookup('in_80ami_2026', 'IN', '18097', 2) === 70600, '80% AMI Marion for 2 should be $70,600');
-check(lookup('in_80ami_2026', 'IN', '18063', 2) === null, 'Hendricks 80% AMI is not loaded and must return null');
+check(lookup('in_80ami_2026', 'IN', '18063', 2) === 70600, '80% AMI Hendricks for 2 should be $70,600');
+check(lookup('in_80ami_2026', 'IN', '18057', 4) === 88250, '80% AMI Hamilton for 4 should be $88,250');
+check(lookup('in_50ami_2026', 'IN', '18097', 1) === 38650, '50% AMI Marion for 1 should be $38,650');
+check(lookup('in_30ami_2026', 'IN', '18063', 8) === 43700, '30% AMI Hendricks for 8 should be $43,700');
+check(lookup('in_80ami_2026', 'IN', '18011', 2) === null, 'counties not loaded must return null');
 check(lookup('fpl_150_2026', 'IN', '18097', 11) === 83580, 'households over 8 use the 8-person figure');
 
 // Call scripts fill in, and missing values show as [brackets].

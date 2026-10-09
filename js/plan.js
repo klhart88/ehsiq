@@ -69,6 +69,9 @@ function buildPlan(profile, results) {
 
   const nodes = [
     el('header', { class: 'plan-header' },
+      el('div', { class: 'plan-brand' },
+        el('img', { src: '/assets/smartiq-mark.png', alt: '' }),
+        el('div', { class: 'plan-brand-name' }, 'EHS-', el('span', { text: 'IQ' }), el('small', { text: 'SmartIQ Realty · Fathom Realty' }))),
       el('p', { class: 'plan-kicker', text: 'Home repair help plan' }),
       el('h1', { text: profile.client_name }),
       el('p', { text: [profile.property_address, profile.county_name ? `${profile.county_name} County` : null].filter(Boolean).join(' · ') }),
