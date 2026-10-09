@@ -172,6 +172,25 @@ label.half { max-width: 50%; }
 
 .form-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
 
+/* ---------- Import from PDF ---------- */
+
+.import-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem 1rem 1.5rem;
+  margin: 0 0 1.5rem;
+  background: var(--card);
+  border: 1px dashed var(--field-line);
+  border-radius: var(--radius-md);
+}
+.import-bar .hint { margin: 0.15rem 0 0; }
+.import-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+#import-result { scroll-margin-top: 90px; }
+#import-result ul { margin: 0.35rem 0 0; padding-left: 1.2rem; }
+
 /* ---------- Info tips ---------- */
 
 .info-wrap { position: relative; display: inline-block; margin-left: 0.4rem; vertical-align: 0.1em; }

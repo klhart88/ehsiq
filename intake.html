@@ -34,6 +34,19 @@
 
     <form id="intake-form" novalidate>
 
+      <div class="import-bar">
+        <div>
+          <strong>Have a completed homeowner form?</strong>
+          <p class="hint">Import the filled-in PDF to fill in these answers. Nothing is saved until you review it and click Save.</p>
+        </div>
+        <div class="import-actions">
+          <a class="button secondary" href="/forms/EHS-IQ_Homeowner_Form.pdf" download>Blank form</a>
+          <button type="button" id="import-btn">Import from PDF</button>
+          <input type="file" id="import-file" accept="application/pdf,.pdf" hidden>
+        </div>
+      </div>
+      <div id="import-result" aria-live="polite"></div>
+
       <fieldset>
         <legend>1. Client and consent</legend>
         <div class="grid-2">
@@ -61,6 +74,7 @@
               <option value="signed_in_person">Signed, in person</option>
               <option value="verbal_in_person">Verbal, in person</option>
               <option value="verbal_phone">Verbal, by phone</option>
+              <option value="written_form">Checked on the homeowner form (PDF)</option>
               <option value="other">Other</option>
             </select>
           </label>

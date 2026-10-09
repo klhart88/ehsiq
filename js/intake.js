@@ -9,6 +9,7 @@ import { REPAIR_CATEGORIES, STATUS_LABELS, STATUS_ORDER } from '/js/engineCore.j
 import { matchProfile } from '/js/matchingEngine.js';
 import { getProfile, saveProfile, readIdFromUrl } from '/js/profiles.js';
 import { el, contactLines, PROGRAM_TYPE_LABELS, formatMoney, showError } from '/js/ui.js';
+import { readIntakePdf, toIsoDate } from '/js/pdfImport.js';
 
 const form = document.getElementById('intake-form');
 const resultsSection = document.getElementById('results');
@@ -202,6 +203,78 @@ function fillForm(profile) {
   addressLookedUp = profile.property_address || '';
 }
 
+// ---------- Import from a completed PDF form ----------
+
+const importBtn = document.getElementById('import-btn');
+const importFile = document.getElementById('import-file');
+const importResult = document.getElementById('import-result');
+
+importBtn.addEventListener('click', () => importFile.click());
+
+importFile.addEventListener('change', async () => {
+  const file = importFile.files[0];
+  importFile.value = '';
+  if (!file) return;
+
+  const hasAnswers = form.client_name.value.trim() || form.property_address.value.trim();
+  if (hasAnswers && !confirm('Replace the answers on this page with the ones in the PDF?')) return;
+
+  importResult.replaceChildren();
+  importBtn.disabled = true;
+  importBtn.textContent = 'Reading the PDF...';
+  try {
+    const { answers, answered, warnings } = await readIntakePdf(file, {
+      triFields, repairKeys: Object.keys(REPAIR_CATEGORIES)
+    });
+    if (answered === 0) {
+      throw new Error('The PDF opened, but every box is empty. If the homeowner filled it in, it may have been saved with "Print to PDF", which erases the answers. Ask for the saved file, or enter the answers by hand.');
+    }
+
+    // Tidy the typed answers into the shapes the form expects.
+    const notes = [];
+    for (const name of [...NUMBER_FIELDS, ...MONEY_FIELDS]) {
+      if (answers[name] === undefined) continue;
+      const raw = answers[name];
+      const digits = raw.replace(/\.\d*$/, '').replace(/[^\d]/g, '');
+      answers[name] = digits === '' ? null : Number(digits);
+      if (digits === '') notes.push(`"${raw}" in ${fieldLabel(name)} isn't a number, so it was left blank.`);
+    }
+    if (answers.consent_date !== undefined) {
+      const iso = toIsoDate(answers.consent_date);
+      if (!iso) notes.push(`The consent date "${answers.consent_date}" couldn't be read, so it was left blank.`);
+      answers.consent_date = iso;
+    }
+
+    form.reset();
+    fillForm(answers);
+    form.consent_method.value = answers.consent_given ? 'written_form' : '';
+    addressLookedUp = '';
+    lookupStatus.textContent = '';
+
+    const messages = [...warnings, ...notes];
+    if (!answers.consent_given) messages.push('The consent box on the form was not ticked. Get the homeowner\'s consent before saving.');
+    if (!answers.client_name) messages.push('The homeowner\'s name is blank.');
+    importResult.replaceChildren(
+      el('div', { class: 'success-banner' },
+        el('strong', { text: `Imported ${answered} answer${answered === 1 ? '' : 's'} from ${file.name}.` }),
+        ' Review every section, then click Save and find programs.'),
+      messages.length ? el('div', { class: 'notice' }, el('strong', { text: 'Check these:' }), el('ul', {}, messages.map(m => el('li', { text: m })))) : null
+    );
+    importResult.scrollIntoView({ block: 'start' });
+    if (form.property_address.value.trim()) await lookUpAddress();
+  } catch (err) {
+    importResult.replaceChildren(el('div', { class: 'error-banner', text: err.message }));
+  } finally {
+    importBtn.disabled = false;
+    importBtn.textContent = 'Import from PDF';
+  }
+});
+
+function fieldLabel(name) {
+  const label = form.elements.namedItem(name)?.closest('label');
+  return label ? `"${label.firstChild.textContent.trim()}"` : name;
+}
+
 // ---------- Save and match ----------
 
 form.addEventListener('submit', async (e) => {
@@ -232,6 +305,7 @@ form.addEventListener('submit', async (e) => {
 });
 
 document.getElementById('edit-again').addEventListener('click', () => {
+  importResult.replaceChildren();
   resultsSection.hidden = true;
   form.hidden = false;
   document.querySelector('.lede').hidden = false;

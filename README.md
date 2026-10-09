@@ -74,12 +74,23 @@ A flag with `"soft": true` turns a mismatch into a question instead of a fail.
 
 Other counties aren't loaded. Programs using that table show as "Worth a call" there, with income left for the program to confirm. HUD publishes new limits each spring (effective around June 1); update all three AMI tables (80%, 50%, 30%) and their `effective_date` from the same notice table when IHCDA issues it. To use a tier in a program, point its `income_threshold` rule at the table name.
 
+## Homeowner form (fillable PDF)
+
+`forms/EHS-IQ_Homeowner_Form.pdf` is a standalone fillable form for homeowners or family members: no links and no code. It opens in free Adobe Reader, Chrome and Edge, and prints for filling in by pen. The intake page has a **Blank form** button to download it and an **Import from PDF** button to read a completed copy back in.
+
+- **Import:** the PDF is read in the browser and never uploaded. Answers fill the intake form on screen, and nothing is saved until you click Save.
+- **Consent:** a ticked consent box on the form sets "How consent was given" to "Checked on the homeowner form (PDF)".
+- **Typed copies only:** handwritten or scanned copies can't be imported. A copy saved with "Print to PDF" has lost its answers, and the app says so.
+- **How it links to the app:** each box is named after its intake field. `python3 -I tools/build_intake_pdf.py` rebuilds the PDF and stops if any name or choice no longer matches `intake.html`. Rebuild it whenever an intake question changes, and bump `FORM_ID` in both that script and `js/pdfImport.js` when field names change. The import warns about older copies.
+
 ## Files
 
 | Path | Purpose |
 | --- | --- |
 | `index.html`, `js/dashboard.js` | Client list, stale-program notice, delete |
 | `intake.html`, `js/intake.js` | Intake form and results |
+| `js/pdfImport.js` | Reads a completed homeowner form PDF in the browser (Import from PDF) |
+| `forms/EHS-IQ_Homeowner_Form.pdf` | Fillable homeowner form (generated) |
 | `plan.html`, `js/plan.js`, `css/plan.css` | Printed plan |
 | `programs.html`, `js/programs.js` | Program status admin |
 | `login.html`, `reset-password.html`, `js/authGuard.js` | Single-account sign-in |
@@ -89,7 +100,7 @@ Other counties aren't loaded. Programs using that table show as "Worth a call" t
 | `js/geocode.js`, `js/census-block.js`, `js/cache.js` | Address lookup, copied from HomeAccessIQ |
 | `sql/` | Schema, seed (generated), optional purge, agent setup |
 | `data/catalog.json` | Program catalog source |
-| `tools/` | Seed builder and offline engine test |
+| `tools/` | Seed builder, homeowner form builder, offline engine test |
 
 ## Lessons carried over from HomeAccessIQ
 
