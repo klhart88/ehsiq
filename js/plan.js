@@ -73,11 +73,14 @@ function programBlock(result, profile, number) {
   const p = result.program;
   const asks = [...new Set([...result.verify, ...(p.open_questions || [])])];
   return el('article', { class: `plan-program status-${result.status}` },
-    el('h3', {}, `${number}. ${p.name}`),
+    el('h3', {}, number ? `${number}. ${p.name}` : p.name),
     el('p', { class: 'plan-type' },
       el('span', { class: `plan-tag status-${result.status}`, text: STATUS_LABELS[result.status] }),
       [PROGRAM_TYPE_LABELS[p.program_type], p.max_amount ? `up to ${formatMoney(p.max_amount)}` : null].filter(Boolean).join(', ')),
     el('dl', {},
+      result.status === 'closed'
+        ? [el('dt', { text: 'Status now' }), el('dd', { class: 'status-now', text: [p.status_note, p.reopens_note].filter(Boolean).join(' ') || 'Not taking applications right now.' })]
+        : null,
       el('dt', { text: 'What it can cover' }), el('dd', { text: p.benefit_summary || p.description || '' }),
       result.met.length ? [el('dt', { text: 'Why it may fit' }), el('dd', { text: result.met.join('. ') + '.' })] : null,
       p.strings_attached ? [el('dt', { text: 'Strings attached' }), el('dd', { text: p.strings_attached })] : null,
@@ -156,11 +159,9 @@ function buildPlan(profile, results) {
 
   if (closed.length) {
     nodes.push(section('Closed for now, worth watching',
+      el('p', { text: 'These programs may fit, but they are not taking regular applications right now. Keep them in mind: some reopen soon, and some still help in an emergency.' }),
       el('h3', { class: 'plan-group status-closed', text: `${STATUS_LABELS.closed} (${closed.length})` }),
-      el('ul', {}, closed.map(r => el('li', {},
-        el('strong', { text: r.program.name }), ` (${PROGRAM_TYPE_LABELS[r.program.program_type] || r.program.program_type}): `,
-        [r.program.status_note, r.program.reopens_note].filter(Boolean).join(' '),
-        r.contacts[0]?.phone ? ` (${r.contacts[0].phone})` : '')))));
+      closed.map(r => programBlock(r, profile, null))));
   }
 
   nodes.push(section('Papers to gather before you call',

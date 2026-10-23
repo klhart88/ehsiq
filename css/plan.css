@@ -103,6 +103,8 @@
 }
 .plan-program.status-likely_fit { border-left-color: var(--fit); }
 .plan-program.status-worth_a_call { border-left-color: var(--call); }
+.plan-program.status-closed { border-left-color: var(--closed); }
+.plan-program .status-now { font-weight: 600; }
 .plan-program h3 { font-size: 1.25rem; margin-bottom: 0.1rem; }
 .plan-type { color: var(--ink-muted); margin: 0 0 0.5rem; }
 .plan-program dl { margin: 0; display: grid; grid-template-columns: 11rem 1fr; gap: 0.35rem 1rem; }
