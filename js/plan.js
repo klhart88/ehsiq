@@ -72,7 +72,7 @@ function section(title, ...children) {
 function programBlock(result, profile, number) {
   const p = result.program;
   const asks = [...new Set([...result.verify, ...(p.open_questions || [])])];
-  return el('article', { class: 'plan-program' },
+  return el('article', { class: `plan-program status-${result.status}` },
     el('h3', {}, `${number}. ${p.name}`),
     el('p', { class: 'plan-type' },
       el('span', { class: `plan-tag status-${result.status}`, text: STATUS_LABELS[result.status] }),
@@ -87,6 +87,20 @@ function programBlock(result, profile, number) {
       asks.length ? [el('dt', { text: 'Ask when you call' }), el('dd', {}, el('ul', {}, asks.map(a => el('li', { text: a }))))] : null
     )
   );
+}
+
+// The call list keeps one running number, split under the same colored
+// group headings as the results screen.
+function groupedBlocks(callList, profile) {
+  const nodes = [];
+  let number = 0;
+  for (const status of ['likely_fit', 'worth_a_call']) {
+    const group = callList.filter(r => r.status === status);
+    if (!group.length) continue;
+    nodes.push(el('h3', { class: `plan-group status-${status}`, text: `${STATUS_LABELS[status]} (${group.length})` }));
+    for (const r of group) nodes.push(programBlock(r, profile, ++number));
+  }
+  return nodes;
 }
 
 function buildPlan(profile, results) {
@@ -134,7 +148,7 @@ function buildPlan(profile, results) {
   if (callList.length) {
     nodes.push(section('Who to call, in this order',
       el('p', { text: 'Each of these may be able to help. None is guaranteed: the program decides who qualifies and whether money is available. Call them in this order.' }),
-      callList.map((r, i) => programBlock(r, profile, i + 1))));
+      groupedBlocks(callList, profile)));
   } else {
     nodes.push(section('Who to call',
       el('p', { text: 'No program is a clear fit right now. The contacts under "If you need more help" can look further.' })));
@@ -142,6 +156,7 @@ function buildPlan(profile, results) {
 
   if (closed.length) {
     nodes.push(section('Closed for now, worth watching',
+      el('h3', { class: 'plan-group status-closed', text: `${STATUS_LABELS.closed} (${closed.length})` }),
       el('ul', {}, closed.map(r => el('li', {},
         el('strong', { text: r.program.name }), ` (${PROGRAM_TYPE_LABELS[r.program.program_type] || r.program.program_type}): `,
         [r.program.status_note, r.program.reopens_note].filter(Boolean).join(' '),

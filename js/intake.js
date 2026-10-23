@@ -121,13 +121,18 @@ function fullAddress() {
   const street = form.property_address.value.trim();
   if (!street) return '';
   const city = form.property_city.value.trim();
-  const zip = form.property_zip.value.trim();
-  const hasZip = /\b\d{5}(-\d{4})?\b/.test(street);
-  const hasState = /,\s*(IN|Indiana)\b/i.test(street);
+  const zipBox = form.property_zip.value.trim();
+  const zip = /^\d{5}(-\d{4})?$/.test(zipBox) ? zipBox : '';   // ignore anything that isn't a real ZIP
+  const hasZip = /\b\d{5}(-\d{4})?\s*$/.test(street);
+  const hasState = /(^|[\s,])(IN|[Ii]ndiana)\b(\s+\d{5}(-\d{4})?)?\s*$/.test(street);
   const hasCity = city && street.toLowerCase().includes(city.toLowerCase());
-  if (hasZip && hasState) return street;
-  return [street, hasCity ? null : city, hasState ? null : `IN${!hasZip && zip ? ` ${zip}` : ''}`]
-    .filter(Boolean).join(', ');
+  let full = street;
+  if (!hasState) {
+    full = [street, hasCity ? null : city, `IN${!hasZip && zip ? ` ${zip}` : ''}`].filter(Boolean).join(', ');
+  } else if (!hasZip && zip) {
+    full = `${street} ${zip}`;
+  }
+  return full.replace(/\bIN(,?\s+IN)+\b/g, 'IN');   // never "IN IN"
 }
 
 async function lookUpAddress() {
@@ -203,6 +208,7 @@ function readForm() {
     const checked = form.querySelector(`input[name="${field}"]:checked`);
     data[field] = !checked || checked.value === '' ? null : checked.value === 'true';
   }
+  data.property_address = fullAddress() || null;   // always saved as one clean line
   data.consent_given = form.consent_given.checked;
   data.repair_categories = [...form.querySelectorAll('input[name="repair_categories"]:checked')].map(c => c.value);
   return data;
@@ -261,7 +267,11 @@ importFile.addEventListener('change', async () => {
       if (digits === '') notes.push(`"${raw}" in ${fieldLabel(name)} isn't a number, so it was left blank.`);
     }
     if (answers.client_phone) answers.client_phone = formatPhone(answers.client_phone);
-    if (answers.property_zip) answers.property_zip = (answers.property_zip.match(/\d{5}(-\d{4})?/) || [answers.property_zip])[0];
+    if (answers.property_zip) {
+      const zipMatch = answers.property_zip.match(/\d{5}(-\d{4})?/);
+      if (!zipMatch) notes.push(`"${answers.property_zip}" in the ZIP box isn't a ZIP code, so it was left blank.`);
+      answers.property_zip = zipMatch ? zipMatch[0] : null;
+    }
     if (answers.consent_date !== undefined) {
       const iso = toIsoDate(answers.consent_date);
       if (!iso) notes.push(`The consent date "${answers.consent_date}" couldn't be read, so it was left blank.`);

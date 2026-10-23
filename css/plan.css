@@ -82,8 +82,27 @@
 }
 .call-today h2 { color: var(--danger); margin-bottom: 0.25rem; }
 
-.plan-program { padding: 1rem 0 1.25rem; border-bottom: 1px dashed var(--line); }
-.plan-program:last-child { border-bottom: 0; }
+/* Colored group headings and program cards, matching the results screen */
+.plan-group {
+  margin: 1.6rem 0 0.6rem;
+  padding: 0.15rem 0 0.15rem 0.7rem;
+  border-left: 6px solid currentColor;
+  font-size: 1.2rem;
+}
+.plan-group.status-likely_fit { color: var(--fit); }
+.plan-group.status-worth_a_call { color: var(--call); }
+.plan-group.status-closed { color: var(--closed); margin-top: 0.4rem; }
+
+.plan-program {
+  margin: 0.9rem 0 1.1rem;
+  padding: 1rem 1.2rem 1.1rem;
+  border: 1px solid var(--line);
+  border-left: 7px solid var(--gray);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+.plan-program.status-likely_fit { border-left-color: var(--fit); }
+.plan-program.status-worth_a_call { border-left-color: var(--call); }
 .plan-program h3 { font-size: 1.25rem; margin-bottom: 0.1rem; }
 .plan-type { color: var(--ink-muted); margin: 0 0 0.5rem; }
 .plan-program dl { margin: 0; display: grid; grid-template-columns: 11rem 1fr; gap: 0.35rem 1rem; }
@@ -124,7 +143,8 @@
   .plan, .plan * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .plan a { color: var(--ink); text-decoration: none; }
   .call-today { background: #fff; }
-  .plan-section > h2, .plan-program h3, .plan-type, .plan-program dt { break-after: avoid; page-break-after: avoid; }
+  .plan-section > h2, .plan-group, .plan-program h3, .plan-type, .plan-program dt { break-after: avoid; page-break-after: avoid; }
+  .plan-section > h2 { border-bottom: 2px solid var(--charcoal); }
   .plan-program dd, .plan-program dt, .call-today, .checklist li, .contact, .plan-key { break-inside: avoid; page-break-inside: avoid; }
   .plan-key { font-size: 12pt; padding: 0.6rem 0.9rem 0.4rem; margin: 0.9rem 0 1.4rem; }
   .key-table th, .key-table td { padding: 0.18rem 0.45rem; }
