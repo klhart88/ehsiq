@@ -41,6 +41,38 @@
 .plan-section { margin: 2rem 0; }
 .plan-section > h2 { font-size: 1.4rem; color: var(--charcoal); border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; }
 
+.plan-key {
+  margin: 1.25rem 0 2rem;
+  padding: 1rem 1.25rem 0.75rem;
+  border: 1.5px solid var(--line);
+  border-left: 5px solid var(--red);
+  border-radius: var(--radius-md);
+  background: var(--soft);
+  font-size: 0.88em;
+}
+.plan-key > h2 { font-size: 1.15rem; margin-bottom: 0.6rem; }
+.key-grid { display: grid; grid-template-columns: 1fr; gap: 0.6rem; }
+.key-table col.k { width: 9.5rem; }
+.key-table col.p { width: 11rem; }
+.key-table { width: 100%; border-collapse: collapse; background: #fff; }
+.key-table th, .key-table td { text-align: left; vertical-align: top; padding: 0.3rem 0.5rem; border: 1px solid var(--line); line-height: 1.35; }
+.key-table thead th { background: var(--charcoal); color: #fff; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.04em; }
+.key-table tbody th { white-space: nowrap; }
+.key-notes { margin: 0.75rem 0 0.25rem; padding-left: 1.2rem; }
+.key-notes li { margin: 0.2rem 0; }
+.plan-tag {
+  display: inline-block;
+  margin-right: 0.5rem;
+  padding: 0.05rem 0.55rem;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.8em;
+  font-weight: 700;
+}
+.plan-tag.status-likely_fit { color: var(--fit); }
+.plan-tag.status-worth_a_call { color: var(--call); }
+.plan-tag.status-closed { color: var(--closed); }
+
 .call-today {
   border: 3px solid var(--danger);
   background: var(--danger-tint);
@@ -93,7 +125,9 @@
   .plan a { color: var(--ink); text-decoration: none; }
   .call-today { background: #fff; }
   .plan-section > h2, .plan-program h3, .plan-type, .plan-program dt { break-after: avoid; page-break-after: avoid; }
-  .plan-program dd, .plan-program dt, .call-today, .checklist li, .contact { break-inside: avoid; page-break-inside: avoid; }
+  .plan-program dd, .plan-program dt, .call-today, .checklist li, .contact, .plan-key { break-inside: avoid; page-break-inside: avoid; }
+  .plan-key { font-size: 12pt; padding: 0.6rem 0.9rem 0.4rem; margin: 0.9rem 0 1.4rem; }
+  .key-table th, .key-table td { padding: 0.18rem 0.45rem; }
   /* Chrome won't split a grid across pages, so print the field list as blocks. */
   .plan-program dl { display: block; }
   .plan-program dt { margin-top: 0.45rem; }

@@ -6,7 +6,7 @@
 
 import { sessionReady } from '/js/authGuard.js';
 import { matchProfile } from '/js/matchingEngine.js';
-import { fillCallScript } from '/js/engineCore.js';
+import { fillCallScript, STATUS_LABELS } from '/js/engineCore.js';
 import { getProfile, readIdFromUrl } from '/js/profiles.js';
 import { el, contactLines, PROGRAM_TYPE_LABELS, formatDate, formatMoney, showError } from '/js/ui.js';
 import { AGENT_DISPLAY_NAME } from '/js/config.js';
@@ -30,6 +30,41 @@ const FALLBACK_CONTACTS = [
 const CICOA_COUNTIES = ['18097', '18011', '18057', '18059', '18145', '18081', '18109', '18063'];
 const CICOA_CONTACT = { label: 'CICOA Aging & In-Home Solutions (central Indiana)', phone: '317-803-6131 or 800-432-2422' };
 
+// ---------- "How to read this plan" key ----------
+// Kept short on purpose: one row per kind of help that appears on THIS plan.
+const HELP_KINDS = [
+  ['free_service', 'Free service', 'No', 'The program does the repair at no cost.'],
+  ['grant', 'Grant', 'No', 'Money for the repair.'],
+  ['forgivable_loan', 'Forgivable lien', 'Only if sold early', 'No payments or interest; forgiven over time.'],
+  ['deferred_loan', 'Deferred loan', 'Only when the home is sold', 'No monthly payments.'],
+  ['rebate', 'Rebate', 'No', 'Get approved before work starts; paid back to you after.'],
+  ['low_interest_loan', 'Loan', 'Yes', 'Monthly payments.'],
+  ['referral', 'Referral', 'Varies', 'The office decides case by case, often for emergencies.']
+];
+
+function readingKey(results) {
+  const kinds = new Set(results.map(r => r.program.program_type));
+  const rows = HELP_KINDS.filter(([type]) => kinds.has(type));
+  return el('section', { class: 'plan-key' },
+    el('h2', { text: 'How to read this plan' }),
+    el('div', { class: 'key-grid' },
+      el('table', { class: 'key-table' },
+        el('colgroup', {}, el('col', { class: 'k' }), el('col', { class: 'p' }), el('col')),
+        el('thead', {}, el('tr', {}, el('th', { text: 'Kind of help' }), el('th', { text: 'Pay it back?' }), el('th', { text: 'Good to know' }))),
+        el('tbody', {}, rows.map(([, label, payBack, note]) => el('tr', {}, el('th', { scope: 'row', text: label }), el('td', { text: payBack }), el('td', { text: note }))))),
+      el('table', { class: 'key-table' },
+        el('colgroup', {}, el('col', { class: 'k' }), el('col')),
+        el('thead', {}, el('tr', {}, el('th', { text: 'Tag on each program' }), el('th', { text: 'What it means' }))),
+        el('tbody', {},
+          el('tr', {}, el('th', { scope: 'row', text: STATUS_LABELS.likely_fit }), el('td', { text: 'You seem to meet the rules and it is open. Not an approval.' })),
+          el('tr', {}, el('th', { scope: 'row', text: STATUS_LABELS.worth_a_call }), el('td', { text: 'Nothing rules you out, but something needs checking. Questions to ask are listed.' })),
+          el('tr', {}, el('th', { scope: 'row', text: STATUS_LABELS.closed }), el('td', { text: 'Not taking regular applications now. Some still take emergencies.' }))))),
+    el('ul', { class: 'key-notes' },
+      el('li', {}, el('strong', { text: 'Check what each program covers. ' }), 'A program can fit you and still not pay for your repair.'),
+      el('li', {}, el('strong', { text: 'Out of money is not always a no. ' }), 'Some programs closed for the year still help with emergencies such as no heat in winter or no water.'))
+  );
+}
+
 function section(title, ...children) {
   return el('section', { class: 'plan-section' }, el('h2', { text: title }), ...children);
 }
@@ -39,7 +74,9 @@ function programBlock(result, profile, number) {
   const asks = [...new Set([...result.verify, ...(p.open_questions || [])])];
   return el('article', { class: 'plan-program' },
     el('h3', {}, `${number}. ${p.name}`),
-    el('p', { class: 'plan-type', text: [PROGRAM_TYPE_LABELS[p.program_type], p.max_amount ? `up to ${formatMoney(p.max_amount)}` : null].filter(Boolean).join(', ') }),
+    el('p', { class: 'plan-type' },
+      el('span', { class: `plan-tag status-${result.status}`, text: STATUS_LABELS[result.status] }),
+      [PROGRAM_TYPE_LABELS[p.program_type], p.max_amount ? `up to ${formatMoney(p.max_amount)}` : null].filter(Boolean).join(', ')),
     el('dl', {},
       el('dt', { text: 'What it can cover' }), el('dd', { text: p.benefit_summary || p.description || '' }),
       result.met.length ? [el('dt', { text: 'Why it may fit' }), el('dd', { text: result.met.join('. ') + '.' })] : null,
@@ -79,6 +116,9 @@ function buildPlan(profile, results) {
     )
   ];
 
+  // The emergency box stays above everything else; the reading key is the first section.
+  const keyNode = (callList.length || closed.length) ? readingKey([...callList, ...closed]) : null;
+
   if (profile.urgency === 'emergency') {
     nodes.push(el('div', { class: 'call-today' },
       el('h2', { text: 'Call today' }),
@@ -88,6 +128,8 @@ function buildPlan(profile, results) {
         el('li', {}, el('strong', { text: 'Indiana 211' }), ' — dial 211 for emergency help and the township trustee'))
     ));
   }
+
+  if (keyNode) nodes.push(keyNode);
 
   if (callList.length) {
     nodes.push(section('Who to call, in this order',
@@ -101,7 +143,7 @@ function buildPlan(profile, results) {
   if (closed.length) {
     nodes.push(section('Closed for now, worth watching',
       el('ul', {}, closed.map(r => el('li', {},
-        el('strong', { text: r.program.name }), ': ',
+        el('strong', { text: r.program.name }), ` (${PROGRAM_TYPE_LABELS[r.program.program_type] || r.program.program_type}): `,
         [r.program.status_note, r.program.reopens_note].filter(Boolean).join(' '),
         r.contacts[0]?.phone ? ` (${r.contacts[0].phone})` : '')))));
   }
